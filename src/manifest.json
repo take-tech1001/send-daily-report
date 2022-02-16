@@ -1,0 +1,14 @@
+{
+  "name": "Send Slack Post",
+  "manifest_version": 3,
+  "version": "1.0",
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.ts"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
