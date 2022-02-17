@@ -8,9 +8,8 @@ const doNext_items =
   document.querySelectorAll<HTMLInputElement>('.doNext-list input')
 const submit = document.getElementById('submit')
 
-const SLACK_API_TOKEN =
-  'Bearer xoxp-1263474917939-1248526562183-3109979672757-341be25ca19fbcf185d8aa32f2d4e359'
-const SLACK_CHANNEL_ID = 'C0334AKH8SJ'
+const SLACK_API_TOKEN = 'Bearer'
+const SLACK_CHANNEL_ID = ''
 const URL = 'https://slack.com/api/chat.postMessage'
 
 // const post_title = ''
@@ -44,7 +43,7 @@ const handleSubmit = async () => {
     headers: { Authorization: SLACK_API_TOKEN }
   })
     .then(() => {
-      alert('送信が完了しました。\n追ってご連絡致します。')
+      alert('')
     })
     .catch((error) => {
       console.log(error)
