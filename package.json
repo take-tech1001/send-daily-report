@@ -1,5 +1,5 @@
 {
-  "name": "send-slack-post",
+  "name": "send-daily-report",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -25,6 +25,10 @@
     "typescript": "^4.5.4",
     "vite": "^2.8.0",
     "vite-plugin-chrome-extension": "^0.0.7"
+  },
+  "dependencies": {
+    "@slack/web-api": "^6.6.0",
+    "axios": "^0.26.0"
   },
   "prettier": {
     "printWidth": 80,

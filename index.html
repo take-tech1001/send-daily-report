@@ -1,23 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Send Slack Post</title>
-    <link rel="stylesheet" href="src/style.css">
+    <title>Send Daily Report</title>
+    <link rel="stylesheet" href="src/style.css" />
     <script src="src/main.ts" type="module"></script>
-</head>
+  </head>
 
-<body>
-    <form id="control-row">
-        <label for="input">Send Slack Post</label>
-        <input type="text" id="input">
-        <br>
-        <button id="go">Submit!</button>
-    </form>
-    <span id="message" hidden></span>
-</body>
+  <body class="w-[400px] h-[550px] border border-gray-800">
+    <h1 class="py-2 bg-gray-800 text-white text-center font-bold">
+      Daily report
+    </h1>
+    <div id="daily-report-form" class="bg-white overflow-y-scroll p-4">
+      <label for="thinking" class="block font-bold">思ったこと</label>
+      <div class="thinkings flex flex-col">
+        <input
+          type="text"
+          id="thinking"
+          value=""
+          class="border border-gray-800 mt-3 px-2 rounded-md min-h-[35px]"
+        />
+        <input
+          type="text"
+          id="thinking"
+          value=""
+          class="border border-gray-800 mt-3 px-2 rounded-md min-h-[35px]"
+        />
+      </div>
 
+      <label for="doNext" class="mt-8 block font-bold">次やること</label>
+      <div class="doNext-list flex flex-col">
+        <input
+          type="text"
+          id="doNext"
+          value=""
+          class="border border-gray-800 mt-3 px-2 rounded-md min-h-[35px]"
+        />
+        <input
+          type="text"
+          id="doNext"
+          value=""
+          class="border border-gray-800 mt-3 px-2 rounded-md min-h-[35px]"
+        />
+      </div>
+
+      <div class="w-full mt-16 flex justify-center">
+        <button
+          id="submit"
+          class="min-w-[300px] py-3 bg-blue-500 hover:bg-blue-400 text-white font-semibold rounded-3xl"
+        >
+          送信する
+        </button>
+      </div>
+    </div>
+  </body>
 </html>

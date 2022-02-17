@@ -1,10 +1,8 @@
 {
-  "name": "Send Slack Post",
+  "name": "Send Daily Report",
   "manifest_version": 3,
   "version": "1.0",
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background.ts"
   },
