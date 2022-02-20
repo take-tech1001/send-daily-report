@@ -1,4 +1,4 @@
-const form_button = document.getElementById('formButton')!
+const formButton = document.getElementById('formButton')!
 
 const appendSavedElement = (): void => {
   const elem = document.createElement('div')
@@ -8,11 +8,12 @@ const appendSavedElement = (): void => {
   elem.style.border = '1px solid blue'
   elem.style.padding = '8px 0'
   elem.style.marginTop = '15px'
-  const form_elem = document.getElementById('settingForm')
-  form_elem?.appendChild(elem)
+
+  const formElem = document.getElementById('settingForm')
+  formElem?.appendChild(elem)
 }
 
-form_button.onclick = () => {
+formButton.onclick = () => {
   const token: HTMLInputElement = <HTMLInputElement>(
     document.getElementById('token')
   )
