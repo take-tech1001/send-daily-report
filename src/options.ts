@@ -14,15 +14,9 @@ const appendSavedElement = (): void => {
 }
 
 formButton.onclick = () => {
-  const token: HTMLInputElement = <HTMLInputElement>(
-    document.getElementById('token')
-  )
-  const channelID: HTMLInputElement = <HTMLInputElement>(
-    document.getElementById('channelID')
-  )
-  const myName: HTMLInputElement = <HTMLInputElement>(
-    document.getElementById('myName')
-  )
+  const token = <HTMLInputElement>document.getElementById('token')
+  const channelID = <HTMLInputElement>document.getElementById('channelID')
+  const myName = <HTMLInputElement>document.getElementById('myName')
 
   if (!token.value && !channelID.value && !myName.value) return
 
