@@ -1,3 +1,5 @@
+import 'crx-hotreload'
+
 import { format } from 'date-fns'
 
 // const POST_MESSAGE_API_URL = 'https://slack.com/api/chat.postMessage'
