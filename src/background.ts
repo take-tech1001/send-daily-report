@@ -2,8 +2,7 @@ import 'crx-hotreload'
 
 import { format } from 'date-fns'
 
-// const POST_MESSAGE_API_URL = 'https://slack.com/api/chat.postMessage'
-const FILES_UPLOAD_API_URL = 'https://slack.com/api/files.upload'
+import { FILES_UPLOAD_API_URL } from './utils/consts'
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (!message) {

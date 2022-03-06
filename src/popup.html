@@ -13,130 +13,201 @@
     <h1 class="py-2 bg-gray-800 text-white text-center font-bold">
       Daily report
     </h1>
-    <form id="daily-report" class="bg-white overflow-y-scroll p-4">
-      <div class="flex items-center justify-between">
-        <label for="thinking" class="block font-bold">思ったこと</label>
-        <div class="flex">
-          <button class="hover:opacity-80" id="thinking-create-button">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              class="w-[30px] h-[30px] text-[#6a7280]"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
-          <button class="hover:opacity-80" id="thinking-remove-button">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-[30px] h-[30px] text-[#6a7280]"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
+    <form class="bg-white overflow-y-scroll p-4">
+      <div class="flex items-center w-full">
+        <div class="w-1/2">
+          <input
+            class="hidden peer"
+            type="radio"
+            name="channels"
+            id="daily-report-radio"
+            value="日報"
+            checked
+          />
+          <label
+            class="w-full block text-center cursor-pointer font-bold pb-2 peer-checked:border-b-2 peer-checked:border-gray-800"
+            for="daily-report-radio"
+            >日報</label
+          >
+        </div>
+        <div class="w-1/2 ml-3">
+          <input
+            class="hidden peer"
+            type="radio"
+            name="channels"
+            id="times-radio"
+            value="times"
+          />
+          <label
+            class="w-full block text-center cursor-pointer font-bold pb-2 peer-checked:border-b-2 peer-checked:border-gray-800"
+            for="times-radio"
+            >times</label
+          >
         </div>
       </div>
-      <div class="thinkings flex flex-col mt-3" id="thinkings">
-        <div class="thinking-content grid grid-cols-[1fr,80px] items-center">
-          <textarea
-            id="thinking"
-            cols="30"
-            rows="3"
-            class="border border-gray-800 px-2 rounded-md row-start-1 row-end-3 text-[14px]"
-          ></textarea>
-          <button
-            class="thinking-clear-button text-[13px] ml-3 mb-[5px] py-[5px] rounded-md bg-[#cccccc] hover:bg-red-400 text-white font-bold pointer-events-none"
-          >
-            クリア
-          </button>
-          <button
-            class="thinking-save-button text-[13px] ml-3 py-[5px] rounded-md bg-blue-500 hover:bg-blue-400 text-white font-bold"
-          >
-            保存する
-          </button>
+      <div id="daily-report">
+        <div class="flex items-center justify-between mt-5">
+          <label for="thinking" class="block font-bold">思ったこと</label>
+          <div class="flex">
+            <button class="hover:opacity-80" id="thinking-create-button">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="w-[30px] h-[30px] text-[#6a7280]"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+            <button class="hover:opacity-80" id="thinking-remove-button">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-[30px] h-[30px] text-[#6a7280]"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="thinkings flex flex-col mt-3" id="thinkings">
+          <div class="thinking-content grid grid-cols-[1fr,80px] items-center">
+            <textarea
+              id="thinking"
+              cols="30"
+              rows="3"
+              class="border border-gray-800 px-2 rounded-md row-start-1 row-end-3 text-[14px]"
+            ></textarea>
+            <button
+              class="thinking-clear-button text-[13px] ml-3 mb-[5px] py-[5px] rounded-md bg-[#cccccc] hover:bg-red-400 text-white font-bold pointer-events-none"
+            >
+              クリア
+            </button>
+            <button
+              class="thinking-save-button text-[13px] ml-3 py-[5px] rounded-md bg-blue-500 hover:bg-blue-400 text-white font-bold"
+            >
+              保存する
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-8 flex items-center justify-between">
+          <label for="doNext" class="block font-bold">次やること</label>
+          <div>
+            <button class="hover:opacity-80" id="doNext-create-button">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="w-[30px] h-[30px] text-[#6a7280]"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+            <button class="hover:opacity-80" id="doNext-remove-button">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-[30px] h-[30px] text-[#6a7280]"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="doNexts flex flex-col mt-3" id="doNexts">
+          <div class="doNext-content grid grid-cols-[1fr,80px] items-center">
+            <textarea
+              id="doNext"
+              cols="30"
+              rows="3"
+              class="border border-gray-800 px-2 rounded-md row-start-1 row-end-3 text-[14px]"
+            ></textarea>
+            <button
+              class="doNext-clear-button text-[13px] ml-3 mb-[5px] py-[5px] rounded-md bg-[#cccccc] hover:bg-red-400 text-white font-bold pointer-events-none"
+            >
+              クリア
+            </button>
+            <button
+              class="doNext-save-button text-[13px] ml-3 py-[5px] rounded-md bg-blue-500 hover:bg-blue-400 text-white font-bold"
+            >
+              保存する
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="mt-8 flex items-center justify-between">
-        <label for="doNext" class="block font-bold">次やること</label>
-        <div>
-          <button class="hover:opacity-80" id="doNext-create-button">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              class="w-[30px] h-[30px] text-[#6a7280]"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
-          <button class="hover:opacity-80" id="doNext-remove-button">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-[30px] h-[30px] text-[#6a7280]"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
+      <div id="times-container">
+        <div class="mt-8 flex items-center justify-between">
+          <label for="times" class="block font-bold">times</label>
+          <div>
+            <button class="hover:opacity-80" id="times-create-button">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="w-[30px] h-[30px] text-[#6a7280]"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+            <button class="hover:opacity-80" id="times-remove-button">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-[30px] h-[30px] text-[#6a7280]"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="doNext-list flex flex-col mt-3" id="doNext-list">
-        <div class="doNext-content grid grid-cols-[1fr,80px] items-center">
-          <textarea
-            id="doNext"
-            cols="30"
-            rows="3"
-            class="border border-gray-800 px-2 rounded-md row-start-1 row-end-3 text-[14px]"
-          ></textarea>
-          <button
-            class="doNext-clear-button text-[13px] ml-3 mb-[5px] py-[5px] rounded-md bg-[#cccccc] hover:bg-red-400 text-white font-bold pointer-events-none"
-          >
-            クリア
-          </button>
-          <button
-            class="doNext-save-button text-[13px] ml-3 py-[5px] rounded-md bg-blue-500 hover:bg-blue-400 text-white font-bold"
-          >
-            保存する
-          </button>
-        </div>
-        <div class="doNext-content grid grid-cols-[1fr,80px] items-center mt-3">
-          <textarea
-            id="doNext"
-            cols="30"
-            rows="3"
-            class="border border-gray-800 px-2 rounded-md row-start-1 row-end-3 text-[14px]"
-          ></textarea>
-          <button
-            class="doNext-clear-button text-[13px] ml-3 mb-[5px] py-[5px] rounded-md bg-[#cccccc] hover:bg-red-400 text-white font-bold pointer-events-none"
-          >
-            クリア
-          </button>
-          <button
-            class="doNext-save-button text-[13px] ml-3 py-[5px] rounded-md bg-blue-500 hover:bg-blue-400 text-white font-bold"
-          >
-            保存する
-          </button>
+        <div class="times flex flex-col mt-3">
+          <div class="times-content grid grid-cols-[1fr,80px] items-center">
+            <textarea
+              id="times"
+              cols="30"
+              rows="3"
+              class="border border-gray-800 px-2 rounded-md row-start-1 row-end-3 text-[14px]"
+            ></textarea>
+            <button
+              class="times-clear-button text-[13px] ml-3 mb-[5px] py-[5px] rounded-md bg-[#cccccc] hover:bg-red-400 text-white font-bold pointer-events-none"
+            >
+              クリア
+            </button>
+            <button
+              class="times-save-button text-[13px] ml-3 py-[5px] rounded-md bg-blue-500 hover:bg-blue-400 text-white font-bold"
+            >
+              保存する
+            </button>
+          </div>
         </div>
       </div>
 
