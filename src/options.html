@@ -29,10 +29,28 @@
       </div>
       <div style="display: flex; flex-direction: column; margin-top: 20px">
         <label for="channelID" style="font-size: 14px"
-          >SlackのチャンネルID</label
+          >日報を投稿するチャンネルのチャンネルID</label
         >
         <input
           id="channelID"
+          type="text"
+          placeholder="C0000AAA0AA"
+          style="
+            position: relative;
+            transition: 0.3s;
+            border: 1px solid #1b2538;
+            border-radius: 8px;
+            margin-top: 5px;
+            padding: 10px 6px;
+          "
+        />
+      </div>
+      <div style="display: flex; flex-direction: column; margin-top: 20px">
+        <label for="timesChannelID" style="font-size: 14px"
+          >timesを投稿するチャンネルのチャンネルID</label
+        >
+        <input
+          id="timesChannelID"
           type="text"
           placeholder="C0000AAA0AA"
           style="
@@ -51,6 +69,21 @@
           id="myName"
           type="text"
           placeholder="名前"
+          style="
+            position: relative;
+            transition: 0.3s;
+            border: 1px solid #1b2538;
+            border-radius: 8px;
+            margin-top: 5px;
+            padding: 10px 6px;
+          "
+        />
+      </div>
+      <div style="display: flex; flex-direction: column; margin-top: 20px">
+        <label for="toggl" style="font-size: 14px">togglのAPIトークン</label>
+        <input
+          id="toggl"
+          type="text"
           style="
             position: relative;
             transition: 0.3s;
