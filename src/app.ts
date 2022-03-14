@@ -1,5 +1,6 @@
 import * as events from './utils/events'
-import type { reportNames } from './utils/types'
+import { setReportType, setWorkTime } from './utils/setStorage'
+import type { initializeAppProps, reportNames } from './utils/types'
 
 const handleRegisterEvents = (name: reportNames) => {
   const elements: any = {
@@ -32,8 +33,36 @@ const handleRegisterEvents = (name: reportNames) => {
   )
 }
 
-export const initializeDailyReport = () => {
-  ;['thinking', 'doNext'].forEach((name) => {
+export const initializeApp = (props: initializeAppProps) => {
+  const {
+    channels,
+    dailyReport,
+    dailyReportSubmit,
+    times,
+    timesSubmit,
+    goingWork,
+    leavingWork
+  } = props
+  setWorkTime(goingWork, 'goingWork')
+  setWorkTime(leavingWork, 'leavingWork')
+  chrome.storage.sync.get(['ReportType'], (items) => {
+    const reportType = items.ReportType
+
+    if (reportType === 'times') {
+      channels[1].checked = true
+      dailyReport.style.display = 'none'
+      times.style.display = ''
+      setReportType('times')
+      events.handleTimesSubmit(timesSubmit)
+    } else {
+      channels[0].checked = true
+      times.style.display = 'none'
+      dailyReport.style.display = ''
+      setReportType('dailyReport')
+      events.handleDailyReportSubmit(dailyReportSubmit)
+    }
+  })
+  ;['thinking', 'doNext', 'time'].forEach((name) => {
     handleRegisterEvents(name as reportNames)
   })
 }
