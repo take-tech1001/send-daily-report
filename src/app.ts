@@ -41,10 +41,15 @@ export const initializeApp = (props: initializeAppProps) => {
     times,
     timesSubmit,
     goingWork,
-    leavingWork
+    leavingWork,
+    togglButton
   } = props
+
   setWorkTime(goingWork, 'goingWork')
   setWorkTime(leavingWork, 'leavingWork')
+
+  events.handleTogglAlignment(togglButton, goingWork, leavingWork)
+
   chrome.storage.sync.get(['ReportType'], (items) => {
     const reportType = items.ReportType
 
@@ -62,7 +67,29 @@ export const initializeApp = (props: initializeAppProps) => {
       events.handleDailyReportSubmit(dailyReportSubmit)
     }
   })
-  ;['thinking', 'doNext', 'time'].forEach((name) => {
+
+  const names = ['thinking', 'doNext', 'time']
+  names.forEach((name) => {
     handleRegisterEvents(name as reportNames)
+  })
+
+  channels.forEach((r: any) => {
+    r.addEventListener('click', () => {
+      if (channels[0].checked) {
+        dailyReport.style.display = ''
+        times.style.display = 'none'
+
+        setReportType('dailyReport')
+        events.handleReleaseDailyReportSubmit(dailyReportSubmit)
+        events.handleDailyReportSubmit(dailyReportSubmit)
+      } else if (channels[1].checked) {
+        dailyReport.style.display = 'none'
+        times.style.display = ''
+
+        setReportType('times')
+        events.handleReleaseTimeSubmit(timesSubmit)
+        events.handleTimesSubmit(timesSubmit)
+      }
+    })
   })
 }

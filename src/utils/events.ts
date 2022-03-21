@@ -1,6 +1,7 @@
 import { dailyReportElement } from './elements'
+import { ISOtoDate } from './functions'
 import { removeStorageValue, saveStorageValue } from './setStorage'
-import type { reportNames } from './types'
+import type { reportNames, togglResponses } from './types'
 
 export const handleSaveValue = (
   elem: HTMLDivElement,
@@ -128,38 +129,142 @@ export const mutationObserve = (elem: HTMLDivElement, name: reportNames) => {
   mutationObserver.observe(elem, option)
 }
 
-export const handleDailyReportSubmit = (submitElem: HTMLButtonElement) => {
-  submitElem.addEventListener('click', (e) => {
+export const handleTogglAlignment = (
+  togglButton: HTMLButtonElement,
+  goingWork: HTMLInputElement,
+  leavingWork: HTMLInputElement
+) => {
+  togglButton.addEventListener('click', (e: any) => {
     e.preventDefault()
-
-    const thinkingItems: NodeListOf<HTMLTextAreaElement> =
-      document.querySelectorAll('.thinkings textarea')
-    const doNextItems: NodeListOf<HTMLTextAreaElement> =
-      document.querySelectorAll('.doNexts textarea')
-
-    let thinkingText = ''
-    let doNextText = ''
-
-    thinkingItems.forEach((item): void => {
-      thinkingText += `・${item.value}\n`
-    })
-
-    doNextItems.forEach((item): void => {
-      doNextText += `・${item.value}\n`
-    })
-
-    const postContent = `
-        【思ったこと】\n${thinkingText} \n\n 【次やること】\n${doNextText}
-        `
 
     chrome.runtime.sendMessage(
       {
-        text: postContent
+        type: 'toggl'
       },
-      (response) => {
+      (response: togglResponses) => {
         console.log(response)
-        alert(response.message)
+
+        const times = <HTMLButtonElement>document.getElementById('times')
+        const timeContent = document.querySelectorAll('.time-content')
+        timeContent.forEach((content) => content.remove())
+
+        const data = response.data
+        const length = data.length
+        const elems = [...Array(length)].map((_, i) => i + 1).slice(0, -1)
+        const workStart = ISOtoDate(data[0].start)
+        const workEnd = ISOtoDate(data[data.length - 1].stop)
+
+        goingWork.value = workStart
+        leavingWork.value = workEnd
+
+        chrome.storage.sync.set({
+          timeElem: elems,
+          goingWork: workStart,
+          leavingWork: workEnd
+        })
+
+        data.forEach((item, index) => {
+          const start = ISOtoDate(item.start)
+          const stop = ISOtoDate(item.stop)
+          const body = `${item.description}（${start} - ${stop}）`
+
+          chrome.storage.sync.set({
+            [`time${index}`]: body
+          })
+          times?.insertAdjacentHTML(
+            'beforeend',
+            dailyReportElement('time', body)
+          )
+        })
       }
     )
   })
+}
+
+const dailyReportSubmitEvent = (e: any) => {
+  e.preventDefault()
+
+  const thinkingItems: NodeListOf<HTMLTextAreaElement> =
+    document.querySelectorAll('.thinkings textarea')
+  const doNextItems: NodeListOf<HTMLTextAreaElement> =
+    document.querySelectorAll('.doNexts textarea')
+
+  let thinkingText = ''
+  let doNextText = ''
+
+  thinkingItems.forEach((item): void => {
+    thinkingText += `・${item.value}\n`
+  })
+
+  doNextItems.forEach((item): void => {
+    doNextText += `・${item.value}\n`
+  })
+
+  const postContent = `
+      【思ったこと】\n${thinkingText} \n\n 【次やること】\n${doNextText}
+      `
+
+  chrome.runtime.sendMessage(
+    {
+      type: 'daily-report',
+      text: postContent
+    },
+    (response) => {
+      console.log(response)
+      alert(response.message)
+    }
+  )
+}
+
+export const handleDailyReportSubmit = (submitElem: HTMLButtonElement) => {
+  submitElem.addEventListener('click', dailyReportSubmitEvent)
+}
+
+export const handleReleaseDailyReportSubmit = (
+  submitElem: HTMLButtonElement
+) => {
+  submitElem.removeEventListener('click', dailyReportSubmitEvent)
+}
+
+const timesSubmitEvent = (e: any) => {
+  e.preventDefault()
+
+  const goingWork = <HTMLInputElement>document.getElementById('going-work')
+  const leavingWork = <HTMLInputElement>document.getElementById('leaving-work')
+  const timeItems: NodeListOf<HTMLTextAreaElement> =
+    document.querySelectorAll('.times textarea')
+
+  let timesText = ''
+
+  timeItems.forEach((item): void => {
+    timesText += `${item.value}\n`
+  })
+
+  const dateObj = new Date()
+  const month = String(dateObj.getMonth() + 1)
+    .toString()
+    .padStart(2, '0')
+  const date = String(dateObj.getDate().toString().padStart(2, '0'))
+  const postContent = `
+    ${month}/${date} ${goingWork.value} - ${leavingWork.value}\n${timesText}
+  `
+
+  chrome.runtime.sendMessage(
+    {
+      type: 'times',
+      text: postContent
+    },
+    (response) => {
+      console.log(response)
+      alert(response.message)
+    }
+  )
+}
+
+export const handleTimesSubmit = (submitElem: HTMLButtonElement) => {
+  submitElem.addEventListener('click', timesSubmitEvent)
+}
+
+export const handleReleaseTimeSubmit = (submitElem: HTMLButtonElement) => {
+  submitElem.removeEventListener('click', timesSubmitEvent)
 }

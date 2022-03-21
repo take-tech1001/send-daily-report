@@ -26,3 +26,35 @@ export const removeStorageValue = (
     })
   })
 }
+
+export const setReportType = (value: string) => {
+  chrome.storage.sync.get(['ReportType'], (items) => {
+    const reportType = items.ReportType
+
+    if (reportType && reportType === value) {
+      return
+    }
+
+    chrome.storage.sync.set({
+      ReportType: value
+    })
+  })
+}
+
+export const setWorkTime = (elem: HTMLInputElement, key: string) => {
+  chrome.storage.sync.get([key], (item) => {
+    const workTime = item[key]
+
+    if (workTime) {
+      elem.value = workTime
+    }
+
+    elem.addEventListener('change', (e: any) => {
+      e.preventDefault()
+
+      chrome.storage.sync.set({
+        [key]: e.target.value
+      })
+    })
+  })
+}
