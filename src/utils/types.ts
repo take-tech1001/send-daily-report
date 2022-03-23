@@ -33,4 +33,6 @@ export type togglResponse = {
 
 export type togglResponses = {
   data: togglResponse[]
+  status: boolean
+  message?: string
 }
