@@ -32,13 +32,23 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         if (message.type === 'daily-report') {
           if (!token) {
-            alert('トークンを登録してください。')
+            sendResponse({
+              status: false,
+              message: 'トークンを登録してください。'
+            })
             return
           } else if (!channelID) {
-            alert('日報を投稿するチャンネルのチャンネルIDを登録してください。')
+            sendResponse({
+              status: false,
+              message:
+                '日報を投稿するチャンネルのチャンネルIDを登録してください。'
+            })
             return
           } else if (!myName) {
-            alert('自分の名前を登録してください。')
+            sendResponse({
+              status: false,
+              message: '自分の名前を登録してください。'
+            })
             return
           }
 
@@ -71,7 +81,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             .catch((e) => console.error(e.message))
         } else if (message.type === 'toggl') {
           if (!toggl) {
-            alert('togglのAPIトークンを登録してください。')
+            sendResponse({
+              status: false,
+              message: 'togglのAPIトークンを登録してください。'
+            })
             return
           }
 
@@ -84,8 +97,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           const date = new Date()
           const year = date.getFullYear()
           const month = date.getMonth()
-          // const today = date.getDate()
-          const today = date.getDate() - 2
+          const today = date.getDate()
+          // const today = date.getDate() - 1
           const start = new Date(year, month, today, 7)
           const end = new Date(year, month, today, 22)
 
@@ -104,6 +117,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
               return response.json()
             })
             .then((data) => {
+              console.log(data)
+              if (data.length === 0) {
+                sendResponse({
+                  status: false,
+                  message: 'データが存在しませんでした。'
+                })
+                return
+              }
               sendResponse({
                 status: true,
                 message: 'ok',
@@ -111,15 +132,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
               })
             })
             .catch((e) => {
-              console.log('失敗')
               console.log(e)
+              sendResponse({
+                status: false,
+                message: `データが取得できませんでした。\n${e}`
+              })
             })
         } else if (message.type === 'times') {
           if (!token) {
-            alert('トークンを登録してください。')
+            sendResponse({
+              status: false,
+              message: 'トークンを登録してください。'
+            })
             return
           } else if (!timesChannelID) {
-            alert('timesを投稿するチャンネルのチャンネルIDを登録してください。')
+            sendResponse({
+              status: false,
+              message:
+                'timesを投稿するチャンネルのチャンネルIDを登録してください。'
+            })
             return
           }
 

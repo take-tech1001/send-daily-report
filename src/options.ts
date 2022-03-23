@@ -43,7 +43,7 @@ formButton.onclick = () => {
       console.log('toggl:' + items.toggl)
 
       chrome.storage.sync.set({
-        token: token.value ? token.value : items.token,
+        token: token.value ? `Bearer ${token.value}` : items.token,
         channelID: channelID.value ? channelID.value : items.channelID,
         timesChannelID: timesChannelID.value
           ? timesChannelID.value

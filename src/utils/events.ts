@@ -142,7 +142,10 @@ export const handleTogglAlignment = (
         type: 'toggl'
       },
       (response: togglResponses) => {
-        console.log(response)
+        if (!response.status) {
+          alert(response.message)
+          return
+        }
 
         const times = <HTMLButtonElement>document.getElementById('times')
         const timeContent = document.querySelectorAll('.time-content')
