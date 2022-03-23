@@ -12,5 +12,8 @@
   "permissions": ["storage"],
   "options_ui": {
     "page": "options.html"
+  },
+  "icons": {
+    "16": "/icons/icon.png"
   }
 }
