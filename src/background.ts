@@ -29,7 +29,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         console.log(sender)
 
         // https://stackoverflow.com/questions/54368616/no-file-data-response-in-slack-file-upload
-
         if (message.type === 'daily-report') {
           if (!token) {
             sendResponse({

@@ -203,9 +203,7 @@ const dailyReportSubmitEvent = (e: any) => {
     doNextText += `・${item.value}\n`
   })
 
-  const postContent = `
-      【思ったこと】\n${thinkingText} \n\n 【次やること】\n${doNextText}
-      `
+  const postContent = `【思ったこと】\n${thinkingText} \n【次やること】\n${doNextText}`
 
   chrome.runtime.sendMessage(
     {
