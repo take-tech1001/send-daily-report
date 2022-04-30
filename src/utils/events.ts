@@ -246,8 +246,12 @@ const timesSubmitEvent = (e: any) => {
     .toString()
     .padStart(2, '0')
   const date = String(dateObj.getDate().toString().padStart(2, '0'))
+  const workTime =
+    goingWork.value !== '' && leavingWork.value !== ''
+      ? `${goingWork.value} - ${leavingWork.value}`
+      : ''
   const postContent = `
-    ${month}/${date} ${goingWork.value} - ${leavingWork.value}\n${timesText}
+    ${month}/${date} ${workTime}\n${timesText}
   `
 
   chrome.runtime.sendMessage(
