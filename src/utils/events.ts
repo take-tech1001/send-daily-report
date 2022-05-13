@@ -273,3 +273,34 @@ export const handleTimesSubmit = (submitElem: HTMLButtonElement) => {
 export const handleReleaseTimeSubmit = (submitElem: HTMLButtonElement) => {
   submitElem.removeEventListener('click', timesSubmitEvent)
 }
+
+export const handleRegisterEvents = (name: reportNames) => {
+  const elements: any = {
+    [`${name}s`]: document.getElementById(`${name}s`),
+    [`${name}IncrementButton`]: document.getElementById(
+      `${name}-create-button`
+    ),
+    [`${name}DecrementButton`]: document.getElementById(
+      `${name}-remove-button`
+    ),
+    [`${name}Contents`]: document.querySelectorAll(`.${name}-content`)
+  }
+
+  showLoadedElement(elements[`${name}s`], name)
+  handleIncrementElement(
+    elements[`${name}s`],
+    name,
+    elements[`${name}IncrementButton`]
+  )
+  handleDecrementElement(
+    elements[`${name}s`],
+    name,
+    elements[`${name}DecrementButton`]
+  )
+  mutationObserve(elements[`${name}s`], name)
+  elements[`${name}Contents`].forEach(
+    (content: HTMLDivElement, index: number) => {
+      handleSaveValue(content, name, index)
+    }
+  )
+}
