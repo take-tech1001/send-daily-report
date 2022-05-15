@@ -58,3 +58,21 @@ export const setWorkTime = (elem: HTMLInputElement, key: string) => {
     })
   })
 }
+
+export const setFileType = (elem: HTMLInputElement) => {
+  chrome.storage.sync.get('fileType', (item) => {
+    const fileType = item['fileType']
+
+    if (fileType) {
+      elem.checked = fileType
+    }
+
+    elem.addEventListener('change', (e: any) => {
+      e.preventDefault()
+
+      chrome.storage.sync.set({
+        fileType: e.target.checked
+      })
+    })
+  })
+}
