@@ -19,13 +19,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     })
   } else {
     chrome.storage.sync.get(
-      ['token', 'channelID', 'timesChannelID', 'myName', 'toggl'],
+      ['token', 'channelID', 'timesChannelID', 'myName', 'toggl', 'fileType'],
       (items) => {
         const token = items.token
         const channelID = items.channelID
         const timesChannelID = items.timesChannelID
         const myName = items.myName
         const toggl = items.toggl
+        const fileType = items.fileType
         console.log(sender)
 
         // https://stackoverflow.com/questions/54368616/no-file-data-response-in-slack-file-upload
@@ -58,7 +59,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             'title',
             `【日報】${myName} ${format(new Date(), 'yyyy/MM/dd')}`
           )
-          form.append('filetype', 'post')
+          form.append('filetype', fileType ? 'markdown' : 'post')
 
           const param = {
             method: 'POST',

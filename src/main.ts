@@ -15,6 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const togglButton = <HTMLButtonElement>document.getElementById('toggl')
   const goingWork = <HTMLInputElement>document.getElementById('going-work')
   const leavingWork = <HTMLInputElement>document.getElementById('leaving-work')
+  const fileType = <HTMLInputElement>document.getElementById('file-type')
 
   initializeApp({
     channels,
@@ -24,6 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
     timesSubmit,
     goingWork,
     leavingWork,
-    togglButton
+    togglButton,
+    fileType
   })
 })

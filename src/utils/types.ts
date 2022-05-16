@@ -15,6 +15,7 @@ export type initializeAppProps = {
   goingWork: HTMLInputElement
   leavingWork: HTMLInputElement
   togglButton: HTMLButtonElement
+  fileType: HTMLInputElement
 }
 
 export type togglResponse = {

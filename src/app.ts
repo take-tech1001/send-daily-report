@@ -1,5 +1,5 @@
 import * as events from './utils/events'
-import { setReportType, setWorkTime } from './utils/setStorage'
+import { setFileType, setReportType, setWorkTime } from './utils/setStorage'
 import type { initializeAppProps, reportNames } from './utils/types'
 
 export const initializeApp = (props: initializeAppProps) => {
@@ -11,11 +11,14 @@ export const initializeApp = (props: initializeAppProps) => {
     timesSubmit,
     goingWork,
     leavingWork,
-    togglButton
+    togglButton,
+    fileType
   } = props
 
   setWorkTime(goingWork, 'goingWork')
   setWorkTime(leavingWork, 'leavingWork')
+
+  setFileType(fileType)
 
   events.handleTogglAlignment(togglButton, goingWork, leavingWork)
 
