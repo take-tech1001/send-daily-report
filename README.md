@@ -2,11 +2,7 @@
 日報を簡単に投稿するためのChrome拡張機能
 
 ## インストール
-一般公開はしていないので以下の手順で拡張機能を読み込む
-
-1. [必要なファイル](docs/dist.zip)をダウンロード
-2. Chromeの拡張機能のページ(chrome://extensions/)から右上のデベロッパーモードをONにした後「パッケージ化されていない拡張機能を読み込む」をクリックし、1でダウンロードしたファイルを選択<br/>
-＊[参考](https://note.affi-sapo-sv.com/chrome-extent-test.php)  
+https://chrome.google.com/webstore/detail/send-daily-report/kfoabkfnfecocaahfpieedpmkmiekicm?hl=ja&authuser=0
 
 ## 使い方
 - 読み込んだ拡張機能の詳細ページから「拡張機能のオプション」をクリック
