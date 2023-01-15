@@ -85,11 +85,19 @@ export const DailyReport = () => {
     let thinkingText = ''
     let doNextText = ''
 
-    Object.keys(thinkingList).forEach((key) => {
+    Object.keys(
+      thinkingList ?? {
+        0: ''
+      }
+    ).forEach((key) => {
       thinkingText += `・${thinkingList[key]}\n`
     })
 
-    Object.keys(doNextList).forEach((key) => {
+    Object.keys(
+      doNextList ?? {
+        0: ''
+      }
+    ).forEach((key) => {
       doNextText += `・${doNextList[key]}\n`
     })
 

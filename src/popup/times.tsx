@@ -47,6 +47,12 @@ export const Times = () => {
 
     let timesText = ''
 
+    if (timesList == null) {
+      alert('値を入力し保存してください。')
+      setLoading(false)
+      return
+    }
+
     Object.keys(timesList).forEach((key) => {
       timesText += `・${timesList[key]}\n`
     })
