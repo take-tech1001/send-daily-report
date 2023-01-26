@@ -81,25 +81,24 @@ export const DailyReport = () => {
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setLoading(true)
+    console.log(thinkingList, doNextList)
 
     let thinkingText = ''
     let doNextText = ''
 
-    Object.keys(
-      thinkingList ?? {
-        0: ''
-      }
-    ).forEach((key) => {
-      thinkingText += `・${thinkingList[key]}\n`
-    })
+    if (thinkingList != null) {
+      const thinkingKeys = Object.keys(thinkingList)
+      thinkingKeys?.forEach((key) => {
+        thinkingText += `・${thinkingList[key]}\n`
+      })
+    }
 
-    Object.keys(
-      doNextList ?? {
-        0: ''
-      }
-    ).forEach((key) => {
-      doNextText += `・${doNextList[key]}\n`
-    })
+    if (doNextList != null) {
+      const doNextKeys = Object.keys(doNextList)
+      doNextKeys?.forEach((key) => {
+        doNextText += `・${doNextList[key]}\n`
+      })
+    }
 
     const postContent = `【思ったこと】\n${thinkingText} \n【次やること】\n${doNextText}`
 

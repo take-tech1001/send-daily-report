@@ -1,7 +1,7 @@
 import '@/style.css'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Button, Input } from 'react-daisyui'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -21,11 +21,11 @@ const schema = z.object({
 type FormInput = z.infer<typeof schema>
 
 const Options = () => {
-  const [token, setToken] = useStorage('token', '')
-  const [myName, setMyName] = useStorage('myName', '')
-  const [channelID, setChannelID] = useStorage('channelID', '')
-  const [timesChannelID, setTimesChannelID] = useStorage('timesChannelID', '')
-  const [toggl, setToggl] = useStorage('toggl', '')
+  const [token, setToken] = useStorage('token')
+  const [myName, setMyName] = useStorage('myName')
+  const [channelID, setChannelID] = useStorage('channelID')
+  const [timesChannelID, setTimesChannelID] = useStorage('timesChannelID')
+  const [toggl, setToggl] = useStorage('toggl')
 
   const {
     register,
