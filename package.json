@@ -1,6 +1,6 @@
 {
   "name": "send-daily-report",
-  "displayName": "Send daily report",
+  "displayName": "Send Daily Report",
   "version": "1.2.0",
   "description": "日報を楽に送信するための拡張機能です。",
   "author": "takeda.k",
