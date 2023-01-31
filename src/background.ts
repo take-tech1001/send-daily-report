@@ -23,10 +23,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     chrome.storage.sync.get(
       ['token', 'channelID', 'myName', 'fileType'],
       (result) => {
-        const token = removeDabbleQuote(result.token)
-        const channelID = removeDabbleQuote(result.channelID)
-        const myName = removeDabbleQuote(result.myName)
-        const fileType = toBoolean(removeDabbleQuote(request.fileType))
+        const token = result.token
+        const channelID = result.channelID
+        const myName = result.myName
+        const fileType =
+          typeof request.fileType === 'boolean' ? 'post' : request.fileType
 
         if (!token) {
           sendResponse({
@@ -72,7 +73,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           `【日報】${myName} ${format(new Date(request.date), 'yyyy/MM/dd')}`
         )
 
-        form.append('filetype', fileType ? 'markdown' : 'post')
+        form.append('filetype', fileType)
 
         const fileUploadParam = {
           method: 'POST',
@@ -120,9 +121,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     chrome.storage.sync.get(
       ['token', 'timesChannelID', 'fileType'],
       (result) => {
-        const token = removeDabbleQuote(result.token)
-        const timesChannelID = removeDabbleQuote(result.timesChannelID)
-        const fileType = toBoolean(removeDabbleQuote(request.fileType))
+        const token = result.token
+        const timesChannelID = result.timesChannelID
+        const fileType =
+          typeof request.fileType === 'boolean' ? 'post' : request.fileType
 
         if (!token) {
           sendResponse({
@@ -139,11 +141,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           return
         }
 
-        if (fileType) {
+        if (fileType === 'markdown') {
           const form = new FormData()
           form.append('channels', timesChannelID)
           form.append('content', request.text)
-          form.append('filetype', 'markdown')
+          form.append('filetype', fileType)
           form.append('title', request.title)
 
           const param = {
@@ -201,7 +203,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   if (request.type === 'toggl') {
     chrome.storage.sync.get(['toggl'], (result) => {
-      const toggl = removeDabbleQuote(result.toggl)
+      const toggl = result.toggl
       if (!toggl) {
         sendResponse({
           status: false,
