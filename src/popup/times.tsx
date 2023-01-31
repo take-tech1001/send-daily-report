@@ -14,9 +14,12 @@ export const Times = () => {
   const [timesList, setTimesList] = useStorage<{
     [key: number]: string
   }>(`timesList`)
-  const [goingWork, setGoingWork] = useStorage('goingWork', '')
-  const [leavingWork, setLeavingWork] = useStorage('leavingWork', '')
-  const [timesFileType, setTimesFileType] = useStorage('timesFileType', 'false')
+  const [goingWorkTime, setGoingWorkTime] = useStorage('goingWorkTime', '')
+  const [leavingWorkTime, setLeavingWorkTime] = useStorage(
+    'leavingWorkTime',
+    ''
+  )
+  const [timesFileType, setTimesFileType] = useStorage('timesFileType', 'text')
   const [loading, setLoading] = useState(false)
   const [togglLoading, setTogglLoading] = useState(false)
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
@@ -34,7 +37,7 @@ export const Times = () => {
     if (timesNum === 1) return
     setTimesNum(timesNum - 1)
 
-    if (Object.keys(timesList).length >= timesNum) {
+    if (timesList != null && Object.keys(timesList).length >= timesNum) {
       const timesLast = Object.keys(timesList).pop()
       delete timesList[timesLast]
       setTimesList(timesList)
@@ -63,8 +66,8 @@ export const Times = () => {
       .padStart(2, '0')
     const dateStr = String(dateObj.getDate().toString().padStart(2, '0'))
     const workTime =
-      goingWork !== '' && leavingWork !== ''
-        ? `${goingWork} - ${leavingWork}`
+      goingWorkTime !== '' && leavingWorkTime !== ''
+        ? `${goingWorkTime} - ${leavingWorkTime}`
         : ''
 
     const title =
@@ -118,8 +121,8 @@ export const Times = () => {
         const workStart = ISOtoDate(data[0].start)
         const workEnd = ISOtoDate(data[data.length - 1].stop)
 
-        setGoingWork(workStart)
-        setLeavingWork(workEnd)
+        setGoingWorkTime(workStart)
+        setLeavingWorkTime(workEnd)
         setTimesNum(data.length)
         setTimesList({})
 
@@ -157,9 +160,9 @@ export const Times = () => {
             <span>出勤</span>
             <Input
               type="time"
-              value={goingWork}
+              value={goingWorkTime}
               size="sm"
-              onChange={(e) => setGoingWork(e.target.value)}
+              onChange={(e) => setGoingWorkTime(e.target.value)}
               name="going-work"
               bordered
             />
@@ -169,8 +172,8 @@ export const Times = () => {
             <span>退勤</span>
             <Input
               type="time"
-              value={leavingWork}
-              onChange={(e) => setLeavingWork(e.target.value)}
+              value={leavingWorkTime}
+              onChange={(e) => setLeavingWorkTime(e.target.value)}
               size="sm"
               name="leaving-work"
               bordered
@@ -231,11 +234,13 @@ export const Times = () => {
       <label className="flex items-center justify-center mt-4">
         <input
           type="checkbox"
-          name=""
-          checked={toBoolean(timesFileType)}
-          onChange={() =>
-            setTimesFileType((prev) => (prev === 'true' ? 'false' : 'true'))
-          }
+          name="timesFileType"
+          checked={timesFileType === 'markdown'}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            e.target.checked
+              ? setTimesFileType('markdown')
+              : setTimesFileType('text')
+          }}
         />
         <p className="select-none ml-[5px] text-[14px]">
           マークダウンファイルで投稿する

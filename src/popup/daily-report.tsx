@@ -17,7 +17,7 @@ export const DailyReport = () => {
   const [doNextList, setDoNextList] = useStorage<{
     [key: number]: string
   }>(`doNextList`)
-  const [fileType, setFileType] = useStorage('fileType', 'false')
+  const [fileType, setFileType] = useStorage('fileType', 'post')
   const [loading, setLoading] = useState(false)
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
 
@@ -31,7 +31,6 @@ export const DailyReport = () => {
 
     switch (type) {
       case 'thinking':
-        console.log(thinkingList)
         setThinkingNum(thinkingNum + 1)
         break
 
@@ -55,7 +54,10 @@ export const DailyReport = () => {
         if (thinkingNum === 1) return
         setThinkingNum(thinkingNum - 1)
 
-        if (Object.keys(thinkingList).length >= thinkingNum) {
+        if (
+          thinkingList != null &&
+          Object.keys(thinkingList).length >= thinkingNum
+        ) {
           const thinkingLast = Object.keys(thinkingList).pop()
           delete thinkingList[thinkingLast]
           setThinkingList(thinkingList)
@@ -66,7 +68,7 @@ export const DailyReport = () => {
         if (doNextNum === 1) return
         setDoNextNum(doNextNum - 1)
 
-        if (Object.keys(doNextList).length >= doNextNum) {
+        if (doNextList != null && Object.keys(doNextList).length >= doNextNum) {
           const doNextLast = Object.keys(doNextList).pop()
           delete doNextList[doNextLast]
           setDoNextList(doNextList)
@@ -81,7 +83,6 @@ export const DailyReport = () => {
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setLoading(true)
-    console.log(thinkingList, doNextList)
 
     let thinkingText = ''
     let doNextText = ''
@@ -229,11 +230,11 @@ export const DailyReport = () => {
       <label className="flex items-center justify-center mt-4">
         <input
           type="checkbox"
-          name=""
-          checked={toBoolean(fileType)}
-          onChange={() =>
-            setFileType((prev) => (prev === 'true' ? 'false' : 'true'))
-          }
+          name="fileType"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            e.target.checked ? setFileType('markdown') : setFileType('post')
+          }}
+          checked={fileType === 'markdown'}
         />
         <p className="select-none ml-[5px] text-[14px]">
           マークダウンファイルで投稿する
