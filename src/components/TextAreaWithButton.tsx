@@ -9,9 +9,15 @@ type Props = {
   type: ReportType
   id: number
   className?: string
+  onSetEdit: (id: number, isEdit: boolean) => void
 }
 
-export const TextAreaWithButton = ({ type, id, className }: Props) => {
+export const TextAreaWithButton = ({
+  type,
+  id,
+  onSetEdit,
+  className
+}: Props) => {
   const [storage, setStorage] = useStorage<{
     [key: number]: string
   }>(`${type}List`, {})
@@ -22,6 +28,7 @@ export const TextAreaWithButton = ({ type, id, className }: Props) => {
     (e) => {
       e.preventDefault()
       setStorage({ ...storage, [id]: value })
+      onSetEdit(id, false)
       handleToast()
     },
     [storage, value]
@@ -53,6 +60,7 @@ export const TextAreaWithButton = ({ type, id, className }: Props) => {
         onBlur={(e) => {
           if (value === '' && e.target.value === '') return
           setValue(e.target.value)
+          onSetEdit(id, true)
         }}
       />
       <button

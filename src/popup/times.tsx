@@ -23,6 +23,9 @@ export const Times = () => {
   const [loading, setLoading] = useState(false)
   const [togglLoading, setTogglLoading] = useState(false)
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
+  const [isEdit, setIsEdit] = useState<{
+    [key: number]: boolean
+  }>()
 
   const { Toast, handleToast } = useToast()
 
@@ -44,9 +47,25 @@ export const Times = () => {
     }
   }
 
+  const handleSetEdit = (id: number, isEdit: boolean) => {
+    setIsEdit((prev) => {
+      if (prev == null) return { [`times${id}`]: isEdit }
+      return { ...prev, [`times${id}`]: isEdit }
+    })
+  }
+
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setLoading(true)
+
+    if (isEdit != null && Object.values(isEdit).includes(true)) {
+      const isConfirm = confirm('編集中の項目があります。送信しますか？')
+
+      if (!isConfirm) {
+        setLoading(false)
+        return
+      }
+    }
 
     let timesText = ''
 
@@ -227,7 +246,12 @@ export const Times = () => {
       </div>
       <div className="flex flex-col mt-3 gap-y-3" id="times">
         {[...range(0, timesNum)].map((i) => (
-          <TextAreaWithButton type="times" id={i} key={i} />
+          <TextAreaWithButton
+            type="times"
+            id={i}
+            key={i}
+            onSetEdit={handleSetEdit}
+          />
         ))}
       </div>
 

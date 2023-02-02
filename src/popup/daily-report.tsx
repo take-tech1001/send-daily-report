@@ -2,7 +2,7 @@ import { Loading } from '@components/Loading'
 import { TextAreaWithButton } from '@components/TextAreaWithButton'
 import { useToast } from '@hooks/useToast'
 import type { ReportType } from '@types'
-import { range, toBoolean } from '@utils'
+import { range } from '@utils'
 import { useState } from 'react'
 import { Input, InputGroup } from 'react-daisyui'
 
@@ -20,6 +20,9 @@ export const DailyReport = () => {
   const [fileType, setFileType] = useStorage('fileType', 'post')
   const [loading, setLoading] = useState(false)
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
+  const [isEdit, setIsEdit] = useState<{
+    [key: number]: boolean
+  }>()
 
   const { Toast, handleToast } = useToast()
 
@@ -80,9 +83,32 @@ export const DailyReport = () => {
     }
   }
 
+  const handleSetThinkingListEdit = (id: number, isEdit: boolean) => {
+    setIsEdit((prev) => {
+      if (prev == null) return { [`thinking${id}`]: isEdit }
+      return { ...prev, [`thinking${id}`]: isEdit }
+    })
+  }
+
+  const handleSetDoNextListEdit = (id: number, isEdit: boolean) => {
+    setIsEdit((prev) => {
+      if (prev == null) return { [`doNext${id}`]: isEdit }
+      return { ...prev, [`doNext${id}`]: isEdit }
+    })
+  }
+
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setLoading(true)
+
+    if (isEdit != null && Object.values(isEdit).includes(true)) {
+      const isConfirm = confirm('編集中の項目があります。送信しますか？')
+
+      if (!isConfirm) {
+        setLoading(false)
+        return
+      }
+    }
 
     let thinkingText = ''
     let doNextText = ''
@@ -180,7 +206,12 @@ export const DailyReport = () => {
       </div>
       <div className="thinkings flex flex-col mt-3 gap-y-3" id="thinkings">
         {[...range(0, thinkingNum)].map((i) => (
-          <TextAreaWithButton type="thinking" id={i} key={i} />
+          <TextAreaWithButton
+            type="thinking"
+            id={i}
+            key={i}
+            onSetEdit={handleSetThinkingListEdit}
+          />
         ))}
       </div>
 
@@ -223,7 +254,12 @@ export const DailyReport = () => {
       </div>
       <div className="doNexts flex flex-col mt-3 gap-y-3" id="doNexts">
         {[...range(0, doNextNum)].map((i) => (
-          <TextAreaWithButton type="doNext" id={i} key={i} />
+          <TextAreaWithButton
+            type="doNext"
+            id={i}
+            key={i}
+            onSetEdit={handleSetDoNextListEdit}
+          />
         ))}
       </div>
 
