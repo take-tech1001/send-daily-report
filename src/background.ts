@@ -1,65 +1,152 @@
-import 'crx-hotreload'
-
-import { format } from 'date-fns'
-
 import {
+  CHANGE_STATUS_API_URL,
   FILES_UPLOAD_API_URL,
   POST_MESSAGE_API_URL,
   TOGGL_API_URL
-} from './utils/consts'
-import { dateToISO } from './utils/functions'
+} from '@consts'
+import { removeDabbleQuote, toBoolean } from '@utils'
+import { format } from 'date-fns'
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (!message) {
-    console.log('message is missing')
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (!request) {
+    console.log('request is missing')
 
     sendResponse({
       status: false,
-      reason: 'message is missing'
+      reason: 'request is missing'
     })
-  } else {
-    chrome.storage.sync.get(
-      ['token', 'channelID', 'timesChannelID', 'myName', 'toggl', 'fileType'],
-      (items) => {
-        const token = items.token
-        const channelID = items.channelID
-        const timesChannelID = items.timesChannelID
-        const myName = items.myName
-        const toggl = items.toggl
-        const fileType = items.fileType
-        console.log(sender)
 
-        // https://stackoverflow.com/questions/54368616/no-file-data-response-in-slack-file-upload
-        if (message.type === 'daily-report') {
-          if (!token) {
-            sendResponse({
-              status: false,
-              message: 'トークンを登録してください。'
+    return
+  }
+
+  if (request.type === 'daily-report') {
+    chrome.storage.sync.get(
+      ['token', 'channelID', 'myName', 'fileType'],
+      (result) => {
+        const token = result.token
+        const channelID = result.channelID
+        const myName = result.myName
+        const fileType =
+          typeof request.fileType === 'boolean' ? 'post' : request.fileType
+
+        if (!token) {
+          sendResponse({
+            status: false,
+            message: 'トークンを登録してください。'
+          })
+          return
+        } else if (!channelID) {
+          sendResponse({
+            status: false,
+            message:
+              '日報を投稿するチャンネルのチャンネルIDを登録してください。'
+          })
+          return
+        } else if (!myName) {
+          sendResponse({
+            status: false,
+            message: '自分の名前を登録してください。'
+          })
+          return
+        }
+
+        const changeStatusParam = {
+          method: 'POST',
+          body: JSON.stringify({
+            profile: {
+              status_text: '退勤',
+              status_emoji: ':taikin:',
+              status_expiration: 0
+            }
+          }),
+          headers: {
+            Authorization: token,
+            'Content-Type': 'application/json'
+          }
+        }
+
+        const form = new FormData()
+        form.append('channels', channelID)
+        form.append('content', request.text)
+        form.append(
+          'title',
+          `【日報】${myName} ${format(new Date(request.date), 'yyyy/MM/dd')}`
+        )
+
+        form.append('filetype', fileType)
+
+        const fileUploadParam = {
+          method: 'POST',
+          body: form,
+          headers: {
+            Authorization: token
+          }
+        }
+
+        Promise.all([
+          fetch(CHANGE_STATUS_API_URL, changeStatusParam),
+          fetch(FILES_UPLOAD_API_URL, fileUploadParam)
+        ])
+          .then((responses) => {
+            responses.forEach((response) => {
+              if (!response.ok) {
+                sendResponse({
+                  status: false,
+                  message: response.statusText
+                })
+                return
+              }
             })
-            return
-          } else if (!channelID) {
+
+            sendResponse({
+              status: true,
+              message: '送信しました。'
+            })
+          })
+          .catch((e) => {
+            console.error(e.message)
             sendResponse({
               status: false,
               message:
-                '日報を投稿するチャンネルのチャンネルIDを登録してください。'
+                '送信に失敗しました。拡張機能を更新して再度お試しください。'
             })
-            return
-          } else if (!myName) {
-            sendResponse({
-              status: false,
-              message: '自分の名前を登録してください。'
-            })
-            return
-          }
+          })
+      }
+    )
 
+    return true
+  }
+
+  if (request.type === 'times') {
+    chrome.storage.sync.get(
+      ['token', 'timesChannelID', 'fileType'],
+      (result) => {
+        const token = result.token
+        const timesChannelID = result.timesChannelID
+        const fileType =
+          typeof request.fileType === 'boolean' ? 'post' : request.fileType
+
+        if (!token) {
+          sendResponse({
+            status: false,
+            message: 'トークンを登録してください。'
+          })
+          return
+        } else if (!timesChannelID) {
+          sendResponse({
+            status: false,
+            message:
+              'timesを投稿するチャンネルのチャンネルIDを登録してください。'
+          })
+          return
+        }
+
+        if (fileType === 'markdown') {
           const form = new FormData()
-          form.append('channels', channelID)
-          form.append('content', message.text)
-          form.append(
-            'title',
-            `【日報】${myName} ${format(new Date(), 'yyyy/MM/dd')}`
-          )
-          form.append('filetype', fileType ? 'markdown' : 'post')
+          form.append('channels', timesChannelID)
+          form.append('content', request.text)
+          form.append('filetype', fileType)
+          form.append('title', request.title)
 
           const param = {
             method: 'POST',
@@ -68,97 +155,29 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
               Authorization: token
             }
           }
+
           fetch(FILES_UPLOAD_API_URL, param)
             .then((res) => res.json())
             .then((json) => {
-              console.log('post', json)
               sendResponse({
                 status: true,
                 message: '送信しました'
               })
             })
-
-            .catch((e) => console.error(e.message))
-        } else if (message.type === 'toggl') {
-          if (!toggl) {
-            sendResponse({
-              status: false,
-              message: 'togglのAPIトークンを登録してください。'
-            })
-            return
-          }
-
-          const password = 'api_token'
-          const username = toggl
-          const encoded = btoa(`${username}:${password}`)
-          const auth = 'Basic ' + encoded
-          const headers = new Headers()
-
-          const date = new Date()
-          const year = date.getFullYear()
-          const month = date.getMonth()
-          const today = date.getDate()
-          // const today = date.getDate() - 1
-          const start = new Date(year, month, today, 7)
-          const end = new Date(year, month, today, 22)
-
-          headers.append('Accept', 'application/json')
-          headers.append('Authorization', auth)
-          fetch(
-            `${TOGGL_API_URL}time_entries?start_date=${dateToISO(
-              start
-            )}&end_date=${dateToISO(end)}`,
-            {
-              headers: headers,
-              credentials: 'include'
-            }
-          )
-            .then((response) => {
-              return response.json()
-            })
-            .then((data) => {
-              console.log(data)
-              if (data.length === 0) {
-                sendResponse({
-                  status: false,
-                  message: 'データが存在しませんでした。'
-                })
-                return
-              }
-              sendResponse({
-                status: true,
-                message: 'ok',
-                data
-              })
-            })
             .catch((e) => {
-              console.log(e)
+              console.error(e.message)
               sendResponse({
                 status: false,
-                message: `データが取得できませんでした。\n${e}`
+                message:
+                  '送信に失敗しました。拡張機能を更新して再度お試しください。'
               })
             })
-        } else if (message.type === 'times') {
-          if (!token) {
-            sendResponse({
-              status: false,
-              message: 'トークンを登録してください。'
-            })
-            return
-          } else if (!timesChannelID) {
-            sendResponse({
-              status: false,
-              message:
-                'timesを投稿するチャンネルのチャンネルIDを登録してください。'
-            })
-            return
-          }
-
+        } else {
           const param = {
             method: 'POST',
             body: JSON.stringify({
               channel: timesChannelID,
-              text: message.text
+              text: `${request.title}\n${request.text}`
             }),
             headers: {
               'Content-type': 'application/json; charset=UTF-8',
@@ -178,7 +197,66 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
       }
     )
+
+    return true
   }
 
-  return true
+  if (request.type === 'toggl') {
+    chrome.storage.sync.get(['toggl'], (result) => {
+      const toggl = result.toggl
+      if (!toggl) {
+        sendResponse({
+          status: false,
+          message: 'togglのトークンを登録してください。'
+        })
+        return
+      }
+
+      const password = 'api_token'
+      const username = toggl
+      const encoded = btoa(`${username}:${password}`)
+      const auth = 'Basic ' + encoded
+      const headers = new Headers()
+
+      const start = request.start
+      const end = request.end
+
+      headers.append('Accept', 'application/json')
+      headers.append('Authorization', auth)
+
+      fetch(
+        `${TOGGL_API_URL}time_entries?start_date=${start}&end_date=${end}`,
+        {
+          headers: headers,
+          credentials: 'include'
+        }
+      )
+        .then((response) => {
+          return response.json()
+        })
+        .then((data) => {
+          if (data.length === 0) {
+            sendResponse({
+              status: false,
+              message: 'データが存在しませんでした。'
+            })
+            return
+          }
+          sendResponse({
+            status: true,
+            message: 'ok',
+            data
+          })
+        })
+        .catch((e) => {
+          console.log(e)
+          sendResponse({
+            status: false,
+            message: `データが取得できませんでした。\n${e}`
+          })
+        })
+    })
+
+    return true
+  }
 })
