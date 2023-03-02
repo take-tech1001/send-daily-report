@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@hookform/resolvers': ^2.9.10
   '@plasmohq/prettier-plugin-sort-imports': 3.6.1
-  '@plasmohq/storage': ^0.13.1
+  '@plasmohq/storage': ^0.15.0
   '@types/chrome': 0.0.206
   '@types/node': 18.11.18
   '@types/react': 18.0.28
@@ -35,7 +35,7 @@ dependencies:
 devDependencies:
   '@hookform/resolvers': 2.9.10_react-hook-form@7.41.5
   '@plasmohq/prettier-plugin-sort-imports': 3.6.1_prettier@2.8.1
-  '@plasmohq/storage': 0.13.1_react@18.2.0
+  '@plasmohq/storage': 0.15.0_react@18.2.0
   '@types/chrome': 0.0.206
   '@types/node': 18.11.18
   '@types/react': 18.0.28
@@ -1682,8 +1682,8 @@ packages:
       - supports-color
     dev: true
 
-  /@plasmohq/storage/0.13.1_react@18.2.0:
-    resolution: {integrity: sha512-aKab6h4nPzj7tywhjtUiiqTQGzHt5dE408Uy5mV6+JMaL9UMavgleurL4bzDr4YvyibuL1vvTYwWqof7L8TFJQ==}
+  /@plasmohq/storage/0.15.0_react@18.2.0:
+    resolution: {integrity: sha512-521NLNVEncdNTmoafLyyaN1huvISLqyJtKDdcYhiGaN2LEOZZaSMAxEeBh/S0MWq/C03IetXfIkuWKFwrXUbkw==}
     peerDependencies:
       react: ^16.8.6 || ^17 || ^18
     peerDependenciesMeta:
