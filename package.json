@@ -21,7 +21,7 @@
   "devDependencies": {
     "@hookform/resolvers": "^2.9.10",
     "@plasmohq/prettier-plugin-sort-imports": "3.6.1",
-    "@plasmohq/storage": "^0.13.1",
+    "@plasmohq/storage": "^1.0.0",
     "@types/chrome": "0.0.206",
     "@types/node": "18.11.18",
     "@types/react": "18.0.28",
