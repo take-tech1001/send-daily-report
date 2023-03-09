@@ -4,7 +4,7 @@ import {
   POST_MESSAGE_API_URL,
   TOGGL_API_URL
 } from '@consts'
-import { removeDabbleQuote, toBoolean } from '@utils'
+import { removeDabbleQuote } from '@utils'
 import { format } from 'date-fns'
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -19,15 +19,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return
   }
 
-  if (request.type === 'daily-report') {
+  if (
+    request.type === 'daily-report' ||
+    request.type === 'daily-report-director'
+  ) {
     chrome.storage.sync.get(
       ['token', 'channelID', 'myName', 'fileType'],
       (result) => {
-        const token = result.token
-        const channelID = result.channelID
-        const myName = result.myName
+        const token = removeDabbleQuote(result.token)
+        const channelID = removeDabbleQuote(result.channelID)
+        const myName = removeDabbleQuote(result.myName)
         const fileType =
-          typeof request.fileType === 'boolean' ? 'post' : request.fileType
+          request.type === 'daily-report-director'
+            ? 'markdown'
+            : result.fileType
 
         if (!token) {
           sendResponse({
@@ -121,8 +126,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     chrome.storage.sync.get(
       ['token', 'timesChannelID', 'fileType'],
       (result) => {
-        const token = result.token
-        const timesChannelID = result.timesChannelID
+        const token = removeDabbleQuote(result.token)
+        const timesChannelID = removeDabbleQuote(result.timesChannelID)
         const fileType =
           typeof request.fileType === 'boolean' ? 'post' : request.fileType
 
@@ -203,7 +208,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   if (request.type === 'toggl') {
     chrome.storage.sync.get(['toggl'], (result) => {
-      const toggl = result.toggl
+      const toggl = removeDabbleQuote(result.toggl)
       if (!toggl) {
         sendResponse({
           status: false,

@@ -2,15 +2,17 @@ import '@/style.css'
 
 import { Tabs } from '@components/Tabs'
 import { ThemeChange } from '@components/ThemeChange'
+import type { ReportType } from '@types'
 import { Theme } from 'react-daisyui'
 
 import { useStorage } from '@plasmohq/storage/hook'
 
 import { DailyReport } from './daily-report'
+import { DailyReportDirector } from './daily-report-director'
 import { Times } from './times'
 
 function Popup() {
-  const [reportType] = useStorage<'日報' | 'times'>('reportType', '日報')
+  const [reportType] = useStorage<ReportType>('reportType', 'daily-report')
 
   return (
     <Theme>
@@ -25,7 +27,13 @@ function Popup() {
         <Tabs />
 
         <form className="overflow-y-scroll px-4 pb-4">
-          {reportType === '日報' ? <DailyReport /> : <Times />}
+          {reportType === 'daily-report' ? (
+            <DailyReport />
+          ) : reportType === 'daily-report-dir' ? (
+            <DailyReportDirector />
+          ) : (
+            <Times />
+          )}
         </form>
       </div>
     </Theme>
