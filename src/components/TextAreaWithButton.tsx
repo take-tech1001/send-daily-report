@@ -1,12 +1,13 @@
 import { useToast } from '@hooks/useToast'
-import type { ReportType } from '@types'
+import type { ReportNames } from '@types'
 import clsx from 'clsx'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import TextareaAutosize from 'react-textarea-autosize'
 
 import { useStorage } from '@plasmohq/storage/hook'
 
 type Props = {
-  type: ReportType
+  type: ReportNames
   id: number
   className?: string
   onSetEdit: (id: number, isEdit: boolean) => void
@@ -23,26 +24,19 @@ export const TextAreaWithButton = ({
   }>(`${type}List`, {})
   const [value, setValue] = useState<string>()
   const { Toast, handleToast } = useToast()
+  const ref = useRef<HTMLTextAreaElement>(null)
 
-  const handleSave = useCallback(
-    (e) => {
-      e.preventDefault()
-      setStorage({ ...storage, [id]: value })
-      onSetEdit(id, false)
-      handleToast()
-    },
-    [storage, value]
-  )
+  const handleSave = useCallback(() => {
+    setStorage({ ...storage, [id]: value })
+    onSetEdit(id, false)
+    handleToast()
+  }, [storage, value])
 
-  const handleClear = useCallback(
-    (e) => {
-      e.preventDefault()
-      e.target.previousSibling.value = ''
-      setStorage({ ...storage, [id]: '' })
-      setValue('')
-    },
-    [storage, value]
-  )
+  const handleClear = useCallback(() => {
+    ref.current.value = ''
+    setStorage({ ...storage, [id]: '' })
+    setValue('')
+  }, [storage, value])
 
   useEffect(() => {
     if (storage[id] === undefined) return
@@ -50,34 +44,41 @@ export const TextAreaWithButton = ({
   }, [storage[id]])
 
   return (
-    <div className={clsx('grid grid-cols-[1fr,80px] items-center', className)}>
-      <textarea
+    <div className={clsx('flex items-center gap-x-3', className)}>
+      <TextareaAutosize
+        minRows={3}
         id={type + id}
         cols={30}
         rows={3}
-        className="border border-gray-800 px-2 rounded-md row-start-1 row-end-3 text-[14px]"
+        className="flex-1 border border-gray-800 px-2 rounded-md row-start-1 row-end-3 text-[14px]"
         defaultValue={value}
         onBlur={(e) => {
           if (value === '' && e.target.value === '') return
           setValue(e.target.value)
           onSetEdit(id, true)
         }}
+        ref={ref}
       />
-      <button
-        className={clsx(
-          'text-[13px] ml-3 mb-[5px] py-[5px] rounded-md text-white font-bold',
-          storage[id] !== undefined && storage[id] !== ''
-            ? 'pointer-events-auto bg-red-500 hover:bg-red-400'
-            : 'pointer-events-none bg-[#cccccc]'
-        )}
-        onClick={(e) => handleClear(e)}>
-        クリア
-      </button>
-      <button
-        className="text-[13px] ml-3 py-[5px] rounded-md bg-blue-500 hover:bg-blue-400 text-white font-bold"
-        onClick={(e) => handleSave(e)}>
-        保存する
-      </button>
+
+      <div className="w-[65px] flex flex-col gap-y-[5px]">
+        <button
+          className={clsx(
+            'text-[13px] w-full py-[5px] rounded-md text-white font-bold',
+            storage[id] !== undefined && storage[id] !== ''
+              ? 'pointer-events-auto bg-red-500 hover:bg-red-400'
+              : 'pointer-events-none bg-[#cccccc]'
+          )}
+          type="button"
+          onClick={handleClear}>
+          クリア
+        </button>
+        <button
+          className="text-[13px] w-full py-[5px] rounded-md bg-blue-500 hover:bg-blue-400 text-white font-bold"
+          type="button"
+          onClick={handleSave}>
+          保存する
+        </button>
+      </div>
 
       <Toast message="保村しました" />
     </div>
