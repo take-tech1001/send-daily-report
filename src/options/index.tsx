@@ -1,31 +1,57 @@
 import '@/style.css'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { removeDabbleQuote } from '@utils'
+import { useEffect, useState } from 'react'
 import { Button, Input } from 'react-daisyui'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
-import { useStorage } from '@plasmohq/storage/hook'
+import { Storage } from '@plasmohq/storage'
 
-const schema = z.object({
-  token: z.string().min(1, { message: 'トークンを入力してください。' }),
-  myName: z.string().min(1, { message: '名前を入力してください。' }),
-  channelID: z.string().min(1, {
-    message: '日報を投稿するチャンネルのチャンネルIDを入力してください。'
-  }),
-  timesChannelID: z.string(),
-  toggl: z.string()
-})
+const schema = z
+  .object({
+    token: z.string().min(1, { message: 'トークンを入力してください。' }),
+    myName: z.string().min(1, { message: '名前を入力してください。' }),
+    channelID: z.string().min(1, {
+      message: '日報を投稿するチャンネルのチャンネルIDを入力してください。'
+    }),
+    timesChannelID: z.string(),
+    toggl: z.string()
+  })
+  .transform((v) => {
+    if (v.token.indexOf('Bearer') === -1) {
+      v.token = `Bearer ${v.token}`
+    }
+
+    return v
+  })
 
 type FormInput = z.infer<typeof schema>
 
+const storage = new Storage()
+
 const Options = () => {
-  const [token, setToken] = useStorage('token')
-  const [myName, setMyName] = useStorage('myName')
-  const [channelID, setChannelID] = useStorage('channelID')
-  const [timesChannelID, setTimesChannelID] = useStorage('timesChannelID')
-  const [toggl, setToggl] = useStorage('toggl')
+  const [token, setToken] = useState('')
+  const [myName, setMyName] = useState('')
+  const [channelID, setChannelID] = useState('')
+  const [timesChannelID, setTimesChannelID] = useState('')
+  const [toggl, setToggl] = useState('')
+
+  const setStorage = async (key: string, value: string) => {
+    await storage.set(key, value)
+  }
+
+  chrome.storage.sync
+    .get(['token', 'myName', 'channelID', 'timesChannelID', 'toggl'])
+    .then((result) => {
+      !!result.token && setToken(removeDabbleQuote(result.token))
+      !!result.myName && setMyName(removeDabbleQuote(result.myName))
+      !!result.channelID && setChannelID(removeDabbleQuote(result.channelID))
+      !!result.timesChannelID &&
+        setTimesChannelID(removeDabbleQuote(result.timesChannelID))
+      !!result.toggl && setToggl(removeDabbleQuote(result.toggl))
+    })
 
   const {
     register,
@@ -44,15 +70,11 @@ const Options = () => {
     timesChannelID,
     toggl
   }: FormInput) => {
-    if (token.indexOf('Bearer') === -1) {
-      token = `Bearer ${token}`
-    }
-
-    token && setToken(token)
-    myName && setMyName(myName)
-    channelID && setChannelID(channelID)
-    timesChannelID && setTimesChannelID(timesChannelID)
-    toggl && setToggl(toggl)
+    await setStorage('token', token)
+    await setStorage('myName', myName)
+    await setStorage('channelID', channelID)
+    await setStorage('timesChannelID', timesChannelID)
+    await setStorage('toggl', toggl)
 
     alert('保存しました')
   }
