@@ -1,7 +1,7 @@
 import { Loading } from '@components/Loading'
 import { TextAreaWithButton } from '@components/TextAreaWithButton'
 import { useToast } from '@hooks/useToast'
-import type { ReportType } from '@types'
+import type { EngineerReportNames } from '@types'
 import { range } from '@utils'
 import { useState } from 'react'
 import { Input, InputGroup } from 'react-daisyui'
@@ -28,7 +28,7 @@ export const DailyReport = () => {
 
   const handleIncrement = (
     e: React.MouseEvent<HTMLButtonElement>,
-    type: Omit<ReportType, 'times'>
+    type: EngineerReportNames
   ) => {
     e.preventDefault()
 
@@ -48,7 +48,7 @@ export const DailyReport = () => {
 
   const handleDecrement = (
     e: React.MouseEvent<HTMLButtonElement>,
-    type: Omit<ReportType, 'times'>
+    type: EngineerReportNames
   ) => {
     e.preventDefault()
 
