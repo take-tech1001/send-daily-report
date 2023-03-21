@@ -2,9 +2,10 @@ import {
   CHANGE_STATUS_API_URL,
   FILES_UPLOAD_API_URL,
   POST_MESSAGE_API_URL,
+  TIME_DESIGNER_API_URL,
   TOGGL_API_URL
 } from '@consts'
-import { removeDabbleQuote } from '@utils'
+import { formatTime, removeDabbleQuote } from '@utils'
 import { format } from 'date-fns'
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -26,13 +27,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     chrome.storage.sync.get(
       ['token', 'channelID', 'myName', 'fileType'],
       (result) => {
-        const token = removeDabbleQuote(result.token)
-        const channelID = removeDabbleQuote(result.channelID)
-        const myName = removeDabbleQuote(result.myName)
+        const token = removeDabbleQuote(result.token ?? '')
+        const channelID = removeDabbleQuote(result.channelID ?? '')
+        const myName = removeDabbleQuote(result.myName ?? '')
         const fileType =
           request.type === 'daily-report-director'
             ? 'markdown'
-            : result.fileType
+            : removeDabbleQuote(result.fileType ?? 'markdown')
 
         if (!token) {
           sendResponse({
@@ -126,10 +127,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     chrome.storage.sync.get(
       ['token', 'timesChannelID', 'fileType'],
       (result) => {
-        const token = removeDabbleQuote(result.token)
-        const timesChannelID = removeDabbleQuote(result.timesChannelID)
-        const fileType =
-          typeof request.fileType === 'boolean' ? 'post' : request.fileType
+        const token = removeDabbleQuote(result.token ?? '')
+        const timesChannelID = removeDabbleQuote(result.timesChannelID ?? '')
+        const fileType = request.fileType ?? 'markdown'
 
         if (!token) {
           sendResponse({
@@ -204,6 +204,135 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     )
 
     return true
+  }
+
+  if (request.type === 'time-designer') {
+    chrome.storage.sync.get(['timeDesignerToken'], (result) => {
+      const token = removeDabbleQuote(result.timeDesignerToken ?? '')
+      if (!token) {
+        sendResponse({
+          status: false,
+          message: 'time designerのトークンを登録してください。'
+        })
+        return
+      }
+
+      const username = 'api_token'
+      const password = token
+      const encoded = btoa(`${username}:${password}`)
+      const auth = 'Basic ' + encoded
+      const headers = new Headers()
+
+      headers.append('Accept', 'application/json')
+      headers.append('Authorization', auth)
+
+      const timeEntriesUrl = new URL(`time-entries`, TIME_DESIGNER_API_URL)
+      const params = new URLSearchParams({
+        since: new Date(`${request.date} 00:00:00`).toISOString(),
+        until: new Date(`${request.date} 23:59:59`).toISOString()
+        // since: new Date(`2023-03-17 00:00:00`).toISOString(),
+        // until: new Date(`2023-03-17 23:59:59`).toISOString()
+      })
+
+      timeEntriesUrl.search = params.toString()
+
+      fetch(timeEntriesUrl, {
+        method: 'GET',
+        headers: headers
+      })
+        .then((response) => {
+          return response.json()
+        })
+        .then((data) => {
+          if (data.items == null || data.total_count === 0) {
+            sendResponse({
+              status: false,
+              message: 'データが存在しませんでした。'
+            })
+            return
+          }
+
+          const taskList = data.items
+            .sort((a, b) => {
+              if (new Date(a.start_date_time) < new Date(b.end_date_time)) {
+                return -1
+              } else {
+                return 1
+              }
+            })
+            .map(async (item) => {
+              const taskId = item.task.id
+              const tasksUrl = new URL(`tasks/${taskId}`, TIME_DESIGNER_API_URL)
+              const response = await fetch(tasksUrl, {
+                method: 'GET',
+                headers: headers
+              })
+              const task = await response.json()
+
+              return {
+                project: task.project.name,
+                title: task.title,
+                workTimeSec: item.working_time_sec,
+                startDateTime: item.start_date_time,
+                endDateTime: item.end_date_time
+              }
+            })
+
+          Promise.all(taskList).then((list) => {
+            let timeline = '### Activity Timeline\n'
+            let totalWorkTime = '### Total\n'
+
+            const workTimes = {}
+            for (const item of list) {
+              const {
+                project,
+                title,
+                workTimeSec,
+                startDateTime,
+                endDateTime
+              } = item
+
+              timeline += `${formatTime(
+                startDateTime,
+                endDateTime
+              )} ${project} / ${title}\n`
+
+              if (workTimes[project]) {
+                workTimes[project] += workTimeSec
+              } else {
+                workTimes[project] = workTimeSec
+              }
+            }
+
+            Object.keys(workTimes).forEach((project, i) => {
+              const lastIndex = Object.keys(workTimes).length - 1
+              const hours = Math.floor(workTimes[project] / 3600)
+              const minutes = Math.floor((workTimes[project] % 3600) / 60)
+              const time = `${hours.toString().padStart(2, '0')}:${minutes
+                .toString()
+                .padStart(2, '0')}`
+
+              totalWorkTime +=
+                i === lastIndex
+                  ? `${project}（${time}）`
+                  : `${project}（${time}）\n`
+            })
+
+            sendResponse({
+              status: true,
+              message: 'ok',
+              data: `${timeline}\n${totalWorkTime}`
+            })
+          })
+        })
+        .catch((e) => {
+          console.log(e)
+          sendResponse({
+            status: false,
+            message: `データが取得できませんでした。\n${e}`
+          })
+        })
+    })
   }
 
   if (request.type === 'toggl') {

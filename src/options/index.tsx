@@ -17,7 +17,8 @@ const schema = z
       message: '日報を投稿するチャンネルのチャンネルIDを入力してください。'
     }),
     timesChannelID: z.string(),
-    toggl: z.string()
+    toggl: z.string(),
+    timeDesignerToken: z.string()
   })
   .transform((v) => {
     if (v.token.indexOf('Bearer') === -1) {
@@ -37,13 +38,21 @@ const Options = () => {
   const [channelID, setChannelID] = useState('')
   const [timesChannelID, setTimesChannelID] = useState('')
   const [toggl, setToggl] = useState('')
+  const [timeDesignerToken, setTimeDesignerToken] = useState('')
 
   const setStorage = async (key: string, value: string) => {
     await storage.set(key, value)
   }
 
   chrome.storage.sync
-    .get(['token', 'myName', 'channelID', 'timesChannelID', 'toggl'])
+    .get([
+      'token',
+      'myName',
+      'channelID',
+      'timesChannelID',
+      'toggl',
+      'timeDesignerToken'
+    ])
     .then((result) => {
       !!result.token && setToken(removeDabbleQuote(result.token))
       !!result.myName && setMyName(removeDabbleQuote(result.myName))
@@ -51,6 +60,8 @@ const Options = () => {
       !!result.timesChannelID &&
         setTimesChannelID(removeDabbleQuote(result.timesChannelID))
       !!result.toggl && setToggl(removeDabbleQuote(result.toggl))
+      !!result.timeDesignerToken &&
+        setTimeDesignerToken(removeDabbleQuote(result.timeDesignerToken))
     })
 
   const {
@@ -68,20 +79,29 @@ const Options = () => {
     myName,
     channelID,
     timesChannelID,
-    toggl
+    toggl,
+    timeDesignerToken
   }: FormInput) => {
     await setStorage('token', token)
     await setStorage('myName', myName)
     await setStorage('channelID', channelID)
     await setStorage('timesChannelID', timesChannelID)
     await setStorage('toggl', toggl)
+    await setStorage('timeDesignerToken', timeDesignerToken)
 
     alert('保存しました')
   }
 
   useEffect(() => {
-    reset({ token, myName, channelID, timesChannelID, toggl })
-  }, [token, myName, channelID, timesChannelID, toggl])
+    reset({
+      token,
+      myName,
+      channelID,
+      timesChannelID,
+      toggl,
+      timeDesignerToken
+    })
+  }, [token, myName, channelID, timesChannelID, toggl, timeDesignerToken])
 
   return (
     <form onSubmit={handleSubmit((d) => handleRegister(d))} className="">
@@ -163,6 +183,17 @@ const Options = () => {
             type="text"
             className="relative transition-all mt-[5px] py-3 px-2"
             {...register('toggl')}
+          />
+        </div>
+        <div className="mt-[20px] flex flex-col">
+          <label htmlFor="toggl" className="text-[14px]">
+            time designerのAPIトークン（任意）
+          </label>
+          <Input
+            id="toggl"
+            type="text"
+            className="relative transition-all mt-[5px] py-3 px-2"
+            {...register('timeDesignerToken')}
           />
         </div>
 

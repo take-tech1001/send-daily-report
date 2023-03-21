@@ -4,7 +4,7 @@ import { useToast } from '@hooks/useToast'
 import type { EngineerReportNames } from '@types'
 import { range } from '@utils'
 import { useState } from 'react'
-import { Input, InputGroup } from 'react-daisyui'
+import { Checkbox, Input, InputGroup } from 'react-daisyui'
 
 import { useStorage } from '@plasmohq/storage/hook'
 
@@ -18,6 +18,8 @@ export const DailyReport = () => {
     [key: number]: string
   }>(`doNextList`)
   const [fileType, setFileType] = useStorage('fileType', 'post')
+  const [isGetSchedule, setIsGetSchedule] = useStorage('isGetSchedule', false)
+
   const [loading, setLoading] = useState(false)
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
   const [isEdit, setIsEdit] = useState<{
@@ -122,32 +124,57 @@ export const DailyReport = () => {
 
     if (doNextList != null) {
       const doNextKeys = Object.keys(doNextList)
-      doNextKeys?.forEach((key) => {
-        doNextText += `・${doNextList[key]}\n`
+      doNextKeys?.forEach((key, i) => {
+        const lastIndex = doNextKeys.length - 1
+        doNextText +=
+          lastIndex === i ? `・${doNextList[key]}` : `・${doNextList[key]}\n`
       })
     }
 
-    const postContent = `【思ったこと】\n${thinkingText} \n【次やること】\n${doNextText}`
+    let postContent = `【思ったこと】\n${thinkingText} \n【次やること】\n${doNextText}`
 
-    chrome.runtime.sendMessage(
-      {
-        type: 'daily-report',
-        date: date,
-        text: postContent,
-        fileType: fileType ?? 'false'
-      },
-      (res) => {
-        if (!res.status) {
-          alert(res.message)
+    const handleMessage = async (postContent: string) => {
+      chrome.runtime.sendMessage(
+        {
+          type: 'daily-report',
+          date: date,
+          text: postContent,
+          fileType: fileType ?? 'markdown'
+        },
+        (res) => {
+          if (!res.status) {
+            alert(res.message)
+            setLoading(false)
+            return
+          }
+
+          console.log(res)
           setLoading(false)
-          return
+          handleToast()
         }
+      )
+    }
 
-        console.log(res)
-        setLoading(false)
-        handleToast()
-      }
-    )
+    if (isGetSchedule) {
+      chrome.runtime.sendMessage(
+        {
+          type: 'time-designer',
+          date: date
+        },
+        (res) => {
+          if (!res.status) {
+            alert(res.message)
+            setLoading(false)
+            return
+          }
+
+          postContent += `\n\n${res.data}`
+          handleMessage(postContent)
+        }
+      )
+    } else {
+      handleMessage(postContent)
+    }
   }
 
   return (
@@ -263,19 +290,38 @@ export const DailyReport = () => {
         ))}
       </div>
 
-      <label className="flex items-center justify-center mt-4">
-        <input
-          type="checkbox"
-          name="fileType"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            e.target.checked ? setFileType('markdown') : setFileType('post')
-          }}
-          checked={fileType === 'markdown'}
-        />
-        <p className="select-none ml-[5px] text-[14px]">
-          マークダウンファイルで投稿する
-        </p>
-      </label>
+      <div className="mt-4 mx-16">
+        <label className="flex items-center">
+          <Checkbox
+            size="xs"
+            name="timeDesigner"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setIsGetSchedule(e.target.checked)
+            }
+            checked={isGetSchedule}
+            color="primary"
+          />
+
+          <p className="select-none ml-[5px] text-[14px]">
+            1日のスケジュールを追加する
+          </p>
+        </label>
+
+        <label className="flex items-center mt-2">
+          <Checkbox
+            size="xs"
+            name="fileType"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              e.target.checked ? setFileType('markdown') : setFileType('post')
+            }}
+            checked={fileType === 'markdown'}
+            color="primary"
+          />
+          <p className="select-none ml-[5px] text-[14px]">
+            マークダウンファイルで投稿する
+          </p>
+        </label>
+      </div>
 
       <div className="w-full mt-12 mb-4 flex justify-center">
         <button

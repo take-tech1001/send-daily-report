@@ -5,7 +5,7 @@ import type { DirectorReportNames } from '@types'
 import { range } from '@utils'
 import clsx from 'clsx'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Input, InputGroup } from 'react-daisyui'
+import { Checkbox, Input, InputGroup } from 'react-daisyui'
 import TextareaAutosize from 'react-textarea-autosize'
 
 import { useStorage } from '@plasmohq/storage/hook'
@@ -32,6 +32,8 @@ export const DailyReportDirector = () => {
     'directorReportList',
     INITIAL_DIRECTOR_REPORT_LIST
   )
+  const [isGetSchedule, setIsGetSchedule] = useStorage('isGetSchedule', false)
+
   const [loading, setLoading] = useState(false)
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
 
@@ -115,26 +117,49 @@ export const DailyReportDirector = () => {
       })
     })
 
-    const postContent = `【今日の対応内容】\n${todayTasksText} \n【見つかった課題（良い悪い困ったこと等振り返り）】\n${issuesFoundText} \n【明日何する？】\n${tomorrowPlanText} \n【他思ったこと】\n${otherThoughtsText}`
+    let postContent = `【今日の対応内容】\n${todayTasksText} \n【見つかった課題（良い悪い困ったこと等振り返り）】\n${issuesFoundText} \n【明日何する？】\n${tomorrowPlanText} \n【他思ったこと】\n${otherThoughtsText}`
 
-    chrome.runtime.sendMessage(
-      {
-        type: 'daily-report-director',
-        date: date,
-        text: postContent
-      },
-      (res) => {
-        if (!res.status) {
-          alert(res.message)
+    const handleMessage = async (postContent: string) => {
+      chrome.runtime.sendMessage(
+        {
+          type: 'daily-report',
+          date: date,
+          text: postContent
+        },
+        (res) => {
+          if (!res.status) {
+            alert(res.message)
+            setLoading(false)
+            return
+          }
+
+          console.log(res)
           setLoading(false)
-          return
+          handleToast()
         }
+      )
+    }
 
-        console.log(res)
-        setLoading(false)
-        handleToast()
-      }
-    )
+    if (isGetSchedule) {
+      chrome.runtime.sendMessage(
+        {
+          type: 'time-designer',
+          date: date
+        },
+        (res) => {
+          if (!res.status) {
+            alert(res.message)
+            setLoading(false)
+            return
+          }
+
+          postContent += `\n\n${res.data}`
+          handleMessage(postContent)
+        }
+      )
+    } else {
+      handleMessage(postContent)
+    }
   }
 
   return (
@@ -216,6 +241,24 @@ export const DailyReportDirector = () => {
           </div>
         )
       })}
+
+      <div className="mt-4 mx-16">
+        <label className="flex items-center">
+          <Checkbox
+            size="xs"
+            name="timeDesigner"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setIsGetSchedule(e.target.checked)
+            }
+            checked={isGetSchedule}
+            color="primary"
+          />
+
+          <p className="select-none ml-[5px] text-[14px]">
+            1日のスケジュールを追加する
+          </p>
+        </label>
+      </div>
 
       <div className="w-full mt-12 mb-4 flex justify-center">
         <button
