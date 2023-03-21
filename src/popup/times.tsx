@@ -1,9 +1,7 @@
 import { Loading } from '@components/Loading'
 import { TextAreaWithButton } from '@components/TextAreaWithButton'
 import { useToast } from '@hooks/useToast'
-import type { togglResponses } from '@types'
-import { ISOtoDate, dateToISO, range, toBoolean } from '@utils'
-import togglImage from 'data-base64:~assets/toggl.png'
+import { range } from '@utils'
 import { useState } from 'react'
 import { Input, InputGroup } from 'react-daisyui'
 
@@ -21,7 +19,6 @@ export const Times = () => {
   )
   const [timesFileType, setTimesFileType] = useStorage('timesFileType', 'text')
   const [loading, setLoading] = useState(false)
-  const [togglLoading, setTogglLoading] = useState(false)
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
   const [isEdit, setIsEdit] = useState<{
     [key: number]: boolean
@@ -116,49 +113,6 @@ export const Times = () => {
     )
   }
 
-  const handleTogglAlignment = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    setTogglLoading(true)
-
-    const _date = new Date(date)
-    const year = _date.getFullYear()
-    const month = _date.getMonth()
-    const today = _date.getDate()
-    const start = dateToISO(new Date(year, month, today, 7))
-    const end = dateToISO(new Date(year, month, today, 22))
-
-    chrome.runtime.sendMessage(
-      { type: 'toggl', start, end },
-      (res: togglResponses) => {
-        if (!res.status) {
-          alert(res.message)
-          setTogglLoading(false)
-          return
-        }
-
-        const data = res.data
-        const workStart = ISOtoDate(data[0].start)
-        const workEnd = ISOtoDate(data[data.length - 1].stop)
-
-        setGoingWorkTime(workStart)
-        setLeavingWorkTime(workEnd)
-        setTimesNum(data.length)
-        setTimesList({})
-
-        let result
-        data.forEach((item, index) => {
-          const start = ISOtoDate(item.start)
-          const stop = ISOtoDate(item.stop)
-          const body = `${item.description}（${start} - ${stop}）`
-          result = { [index]: body, ...result }
-        })
-
-        setTimesList(result)
-        setTogglLoading(false)
-      }
-    )
-  }
-
   return (
     <div>
       <div className="relative mt-8">
@@ -200,16 +154,6 @@ export const Times = () => {
           </InputGroup>
         </div>
       </div>
-      <button
-        className="flex items-center border border-solid border-gray-400 mt-6 rounded-md px-2 py-[5px] font-bold text-white bg-violet-600 hover:bg-violet-500"
-        onClick={handleTogglAlignment}>
-        {togglLoading ? (
-          <Loading />
-        ) : (
-          <img src={togglImage} alt="toggl" width={16} height={16} />
-        )}
-        <p className="ml-[5px] text-sm">Togglと連携する</p>
-      </button>
 
       <div className="mt-4 flex items-center justify-between">
         <label htmlFor="time" className="block font-bold">

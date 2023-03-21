@@ -3,19 +3,6 @@ export function* range(start, end) {
     yield i
   }
 }
-
-export const dateToISO = (date: Date) => {
-  return encodeURIComponent(date.toISOString())
-}
-
-export const ISOtoDate = (time: string) => {
-  const date = Date.parse(time)
-  const dateObj = new Date(date)
-  const hours = dateObj.getHours().toString().padStart(2, '0')
-  const minutes = dateObj.getMinutes().toString().padStart(2, '0')
-  return `${hours}:${minutes}`
-}
-
 export const formatTime = (_start: string, _end: string) => {
   const start = new Date(_start)
   const end = new Date(_end)
@@ -25,10 +12,6 @@ export const formatTime = (_start: string, _end: string) => {
     end.getHours() + ':' + end.getMinutes().toString().padStart(2, '0')
 
   return `${startTime} ~ ${endTime}`
-}
-
-export const toBoolean = (value: string) => {
-  return value === 'true'
 }
 
 export const sleep = (ms: number) =>

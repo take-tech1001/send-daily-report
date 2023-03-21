@@ -2,8 +2,7 @@ import {
   CHANGE_STATUS_API_URL,
   FILES_UPLOAD_API_URL,
   POST_MESSAGE_API_URL,
-  TIME_DESIGNER_API_URL,
-  TOGGL_API_URL
+  TIME_DESIGNER_API_URL
 } from '@consts'
 import { formatTime, removeDabbleQuote } from '@utils'
 import { format } from 'date-fns'
@@ -323,63 +322,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
               message: 'ok',
               data: `${timeline}\n${totalWorkTime}`
             })
-          })
-        })
-        .catch((e) => {
-          console.log(e)
-          sendResponse({
-            status: false,
-            message: `データが取得できませんでした。\n${e}`
-          })
-        })
-    })
-  }
-
-  if (request.type === 'toggl') {
-    chrome.storage.sync.get(['toggl'], (result) => {
-      const toggl = removeDabbleQuote(result.toggl)
-      if (!toggl) {
-        sendResponse({
-          status: false,
-          message: 'togglのトークンを登録してください。'
-        })
-        return
-      }
-
-      const password = 'api_token'
-      const username = toggl
-      const encoded = btoa(`${username}:${password}`)
-      const auth = 'Basic ' + encoded
-      const headers = new Headers()
-
-      const start = request.start
-      const end = request.end
-
-      headers.append('Accept', 'application/json')
-      headers.append('Authorization', auth)
-
-      fetch(
-        `${TOGGL_API_URL}time_entries?start_date=${start}&end_date=${end}`,
-        {
-          headers: headers,
-          credentials: 'include'
-        }
-      )
-        .then((response) => {
-          return response.json()
-        })
-        .then((data) => {
-          if (data.length === 0) {
-            sendResponse({
-              status: false,
-              message: 'データが存在しませんでした。'
-            })
-            return
-          }
-          sendResponse({
-            status: true,
-            message: 'ok',
-            data
           })
         })
         .catch((e) => {

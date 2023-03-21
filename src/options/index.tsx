@@ -17,7 +17,6 @@ const schema = z
       message: '日報を投稿するチャンネルのチャンネルIDを入力してください。'
     }),
     timesChannelID: z.string(),
-    toggl: z.string(),
     timeDesignerToken: z.string()
   })
   .transform((v) => {
@@ -37,7 +36,6 @@ const Options = () => {
   const [myName, setMyName] = useState('')
   const [channelID, setChannelID] = useState('')
   const [timesChannelID, setTimesChannelID] = useState('')
-  const [toggl, setToggl] = useState('')
   const [timeDesignerToken, setTimeDesignerToken] = useState('')
 
   const setStorage = async (key: string, value: string) => {
@@ -59,7 +57,6 @@ const Options = () => {
       !!result.channelID && setChannelID(removeDabbleQuote(result.channelID))
       !!result.timesChannelID &&
         setTimesChannelID(removeDabbleQuote(result.timesChannelID))
-      !!result.toggl && setToggl(removeDabbleQuote(result.toggl))
       !!result.timeDesignerToken &&
         setTimeDesignerToken(removeDabbleQuote(result.timeDesignerToken))
     })
@@ -79,14 +76,12 @@ const Options = () => {
     myName,
     channelID,
     timesChannelID,
-    toggl,
     timeDesignerToken
   }: FormInput) => {
     await setStorage('token', token)
     await setStorage('myName', myName)
     await setStorage('channelID', channelID)
     await setStorage('timesChannelID', timesChannelID)
-    await setStorage('toggl', toggl)
     await setStorage('timeDesignerToken', timeDesignerToken)
 
     alert('保存しました')
@@ -98,10 +93,9 @@ const Options = () => {
       myName,
       channelID,
       timesChannelID,
-      toggl,
       timeDesignerToken
     })
-  }, [token, myName, channelID, timesChannelID, toggl, timeDesignerToken])
+  }, [token, myName, channelID, timesChannelID, timeDesignerToken])
 
   return (
     <form onSubmit={handleSubmit((d) => handleRegister(d))} className="">
@@ -172,17 +166,6 @@ const Options = () => {
             placeholder="C0000AAA0AA"
             className="relative transition-all mt-[5px] py-3 px-2"
             {...register('timesChannelID')}
-          />
-        </div>
-        <div className="mt-[20px] flex flex-col">
-          <label htmlFor="toggl" className="text-[14px]">
-            togglのAPIトークン（任意）
-          </label>
-          <Input
-            id="toggl"
-            type="text"
-            className="relative transition-all mt-[5px] py-3 px-2"
-            {...register('toggl')}
           />
         </div>
         <div className="mt-[20px] flex flex-col">
