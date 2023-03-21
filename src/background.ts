@@ -32,7 +32,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const fileType =
           request.type === 'daily-report-director'
             ? 'markdown'
-            : removeDabbleQuote(result.fileType ?? 'markdown')
+            : removeDabbleQuote(result.fileType ?? 'post')
 
         if (!token) {
           sendResponse({
