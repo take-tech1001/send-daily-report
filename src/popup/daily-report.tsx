@@ -17,7 +17,7 @@ export const DailyReport = () => {
   const [doNextList, setDoNextList] = useStorage<{
     [key: number]: string
   }>(`doNextList`)
-  const [fileType, setFileType] = useStorage('fileType', 'post')
+  const [jinjer, setJinjer] = useStorage('jinjer', false)
   const [isGetSchedule, setIsGetSchedule] = useStorage('isGetSchedule', false)
 
   const [loading, setLoading] = useState(false)
@@ -139,7 +139,7 @@ export const DailyReport = () => {
           type: 'daily-report',
           date: date,
           text: postContent,
-          fileType: fileType ?? 'markdown'
+          jinjer: jinjer
         },
         (res) => {
           if (!res.status) {
@@ -290,7 +290,7 @@ export const DailyReport = () => {
         ))}
       </div>
 
-      <div className="mt-4 mx-16">
+      <div className="mt-4 ml-16">
         <label className="flex items-center">
           <Checkbox
             size="xs"
@@ -310,15 +310,15 @@ export const DailyReport = () => {
         <label className="flex items-center mt-2">
           <Checkbox
             size="xs"
-            name="fileType"
+            name="jinjer"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              e.target.checked ? setFileType('markdown') : setFileType('post')
+              setJinjer(e.target.checked)
             }}
-            checked={fileType === 'markdown'}
+            checked={jinjer}
             color="primary"
           />
           <p className="select-none ml-[5px] text-[14px]">
-            マークダウンファイルで投稿する
+            jinjer退勤コマンドを打つ（要設定）
           </p>
         </label>
       </div>

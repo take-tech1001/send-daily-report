@@ -23,101 +23,118 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     request.type === 'daily-report' ||
     request.type === 'daily-report-director'
   ) {
-    chrome.storage.sync.get(
-      ['token', 'channelID', 'myName', 'fileType'],
-      (result) => {
-        const token = removeDabbleQuote(result.token ?? '')
-        const channelID = removeDabbleQuote(result.channelID ?? '')
-        const myName = removeDabbleQuote(result.myName ?? '')
-        const fileType =
-          request.type === 'daily-report-director'
-            ? 'markdown'
-            : removeDabbleQuote(result.fileType ?? 'post')
+    chrome.storage.sync.get(['token', 'channelID', 'myName'], (result) => {
+      const token = removeDabbleQuote(result.token ?? '')
+      const channelID = removeDabbleQuote(result.channelID ?? '')
+      const myName = removeDabbleQuote(result.myName ?? '')
+      const jinjer = request.jinjer ?? false
+      const fileType = 'markdown'
 
-        if (!token) {
-          sendResponse({
-            status: false,
-            message: 'トークンを登録してください。'
-          })
-          return
-        } else if (!channelID) {
-          sendResponse({
-            status: false,
-            message:
-              '日報を投稿するチャンネルのチャンネルIDを登録してください。'
-          })
-          return
-        } else if (!myName) {
-          sendResponse({
-            status: false,
-            message: '自分の名前を登録してください。'
-          })
-          return
+      if (!token) {
+        sendResponse({
+          status: false,
+          message: 'トークンを登録してください。'
+        })
+        return
+      } else if (!channelID) {
+        sendResponse({
+          status: false,
+          message: '日報を投稿するチャンネルのチャンネルIDを登録してください。'
+        })
+        return
+      } else if (!myName) {
+        sendResponse({
+          status: false,
+          message: '自分の名前を登録してください。'
+        })
+        return
+      }
+
+      const changeStatusParam = {
+        method: 'POST',
+        body: JSON.stringify({
+          profile: {
+            status_text: '退勤',
+            status_emoji: ':taikin:',
+            status_expiration: 0
+          }
+        }),
+        headers: {
+          Authorization: token,
+          'Content-Type': 'application/json'
         }
+      }
 
-        const changeStatusParam = {
-          method: 'POST',
-          body: JSON.stringify({
-            profile: {
-              status_text: '退勤',
-              status_emoji: ':taikin:',
-              status_expiration: 0
+      const form = new FormData()
+      form.append('channels', channelID)
+      form.append('content', request.text)
+      form.append(
+        'title',
+        `【日報】${myName} ${format(new Date(request.date), 'yyyy/MM/dd')}`
+      )
+
+      form.append('filetype', fileType)
+
+      const fileUploadParam = {
+        method: 'POST',
+        body: form,
+        headers: {
+          Authorization: token
+        }
+      }
+
+      Promise.all([
+        fetch(CHANGE_STATUS_API_URL, changeStatusParam),
+        fetch(FILES_UPLOAD_API_URL, fileUploadParam)
+      ])
+        .then((responses) => {
+          responses.forEach((response) => {
+            if (!response.ok) {
+              sendResponse({
+                status: false,
+                message: response.statusText
+              })
+              return
             }
-          }),
-          headers: {
-            Authorization: token,
-            'Content-Type': 'application/json'
-          }
-        }
+          })
 
-        const form = new FormData()
-        form.append('channels', channelID)
-        form.append('content', request.text)
-        form.append(
-          'title',
-          `【日報】${myName} ${format(new Date(request.date), 'yyyy/MM/dd')}`
-        )
-
-        form.append('filetype', fileType)
-
-        const fileUploadParam = {
-          method: 'POST',
-          body: form,
-          headers: {
-            Authorization: token
-          }
-        }
-
-        Promise.all([
-          fetch(CHANGE_STATUS_API_URL, changeStatusParam),
-          fetch(FILES_UPLOAD_API_URL, fileUploadParam)
-        ])
-          .then((responses) => {
-            responses.forEach((response) => {
-              if (!response.ok) {
-                sendResponse({
-                  status: false,
-                  message: response.statusText
-                })
-                return
+          if (jinjer) {
+            const param = {
+              method: 'POST',
+              body: JSON.stringify({
+                channel: channelID,
+                text: 'お疲れ様です。退勤します。'
+              }),
+              headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                Authorization: token
               }
-            })
-
+            }
+            fetch(POST_MESSAGE_API_URL, param)
+              .then((res) => res.json())
+              .then((json) => {
+                sendResponse({
+                  status: true,
+                  message: '送信しました。'
+                })
+              })
+              .catch((e) => console.error(e.message))
+          } else {
             sendResponse({
               status: true,
               message: '送信しました。'
             })
+          }
+        })
+        .catch((e) => {
+          console.error(e.message)
+          sendResponse({
+            status: false,
+            message:
+              '送信に失敗しました。拡張機能を更新して再度お試しください。'
           })
-          .catch((e) => {
-            console.error(e.message)
-            sendResponse({
-              status: false,
-              message:
-                '送信に失敗しました。拡張機能を更新して再度お試しください。'
-            })
-          })
-      }
-    )
+        })
+    })
 
     return true
   }
