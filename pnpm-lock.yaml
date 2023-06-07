@@ -10,7 +10,7 @@ specifiers:
   '@types/react-dom': 18.0.11
   autoprefixer: ^10.4.13
   clsx: ^1.2.1
-  daisyui: ^2.46.0
+  daisyui: ^3.0.0
   date-fns: ^2.29.3
   plasmo: 0.75.2
   postcss: ^8.4.20
@@ -25,11 +25,11 @@ specifiers:
   zod: ^3.20.2
 
 dependencies:
-  daisyui: 2.46.0_r4gnkvssmvyxmi2wmat5xbx36a
+  daisyui: 3.0.4_postcss@8.4.20
   date-fns: 2.29.3
   plasmo: 0.75.2_iyfpnomciillkc63qm7dtpmfru
   react: 18.2.0
-  react-daisyui: 3.0.1_zcspthuygbtfsezuhpgebh75g4
+  react-daisyui: 3.0.1_kz6zmjhcq5ettkyeggq63fk5ee
   react-dom: 18.2.0_react@18.2.0
   tailwindcss: 3.2.4_postcss@8.4.20
 
@@ -2512,6 +2512,7 @@ packages:
       picocolors: 1.0.0
       postcss: 8.4.20
       postcss-value-parser: 4.2.0
+    dev: true
 
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -2809,6 +2810,10 @@ packages:
       color-string: 1.9.1
     dev: false
 
+  /colord/2.9.3:
+    resolution: {integrity: sha512-jeC1axXpnb0/2nn/Y1LPuLdgXBLH7aDcHu4KEKfqw3CUhX7ZpfBSlPKyqXE6btIgEzfWtrX3/tyBCaCvXvMkOw==}
+    dev: false
+
   /commander/4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
     engines: {node: '>= 6'}
@@ -2954,14 +2959,12 @@ packages:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
     dev: true
 
-  /daisyui/2.46.0_r4gnkvssmvyxmi2wmat5xbx36a:
-    resolution: {integrity: sha512-7L+KMCADsAmZkJUIabgDSpqEF9+uVPvyJSkSieOpY2WKeDd2pvcELZMs/AKaKkB5gcrb9cPP9vFdLXeDFJj90g==}
+  /daisyui/3.0.4_postcss@8.4.20:
+    resolution: {integrity: sha512-KfQXj1WD0U0qA+9olKqZRgqu/D6udA3+DjsT5PIdk3dOAFFbyzYzUiadiAbZ/QHe98IDBWHmVjjB51Hxg8TydQ==}
     peerDependencies:
-      autoprefixer: ^10.0.2
-      postcss: ^8.1.6
+      postcss: ^8
     dependencies:
-      autoprefixer: 10.4.13_postcss@8.4.20
-      color: 4.2.3
+      colord: 2.9.3
       css-selector-tokenizer: 0.8.0
       postcss: 8.4.20
       postcss-js: 4.0.0_postcss@8.4.20
@@ -3293,6 +3296,7 @@ packages:
 
   /fraction.js/4.2.0:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
+    dev: true
 
   /fs-constants/1.0.0:
     resolution: {integrity: sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==}
@@ -4318,6 +4322,7 @@ packages:
   /normalize-range/0.1.2:
     resolution: {integrity: sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==}
     engines: {node: '>=0.10.0'}
+    dev: true
 
   /normalize-url/8.0.0:
     resolution: {integrity: sha512-uVFpKhj5MheNBJRTiMZ9pE/7hD1QTeEvugSJW/OmLzAp78PB5O6adfMNTvmfKhXBkvCzC+rqifWcVYpGFwTjnw==}
@@ -4758,7 +4763,7 @@ packages:
       strip-json-comments: 2.0.1
     dev: false
 
-  /react-daisyui/3.0.1_zcspthuygbtfsezuhpgebh75g4:
+  /react-daisyui/3.0.1_kz6zmjhcq5ettkyeggq63fk5ee:
     resolution: {integrity: sha512-UAsSpIJaRh7gpBNpn7abrpFecq2Bj+C/ZHquCK86ovdQygD1lB0nId+LV5mNVs54+yPW04d+P4JL9aFcvSrEIg==}
     peerDependencies:
       daisyui: ^2.42.1
@@ -4766,7 +4771,7 @@ packages:
       react-dom: '>=16'
       tailwindcss: ^3.0.23
     dependencies:
-      daisyui: 2.46.0_r4gnkvssmvyxmi2wmat5xbx36a
+      daisyui: 3.0.4_postcss@8.4.20
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       tailwindcss: 3.2.4_postcss@8.4.20
