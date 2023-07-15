@@ -16,7 +16,7 @@ specifiers:
   postcss: ^8.4.20
   prettier: 3.0.0
   react: 18.2.0
-  react-daisyui: ^3.0.1
+  react-daisyui: ^4.0.0
   react-dom: 18.2.0
   react-hook-form: ^7.41.5
   react-textarea-autosize: ^8.4.0
@@ -29,7 +29,7 @@ dependencies:
   date-fns: 2.29.3
   plasmo: 0.80.0_iyfpnomciillkc63qm7dtpmfru
   react: 18.2.0
-  react-daisyui: 3.0.1_kz6zmjhcq5ettkyeggq63fk5ee
+  react-daisyui: 4.0.0_kz6zmjhcq5ettkyeggq63fk5ee
   react-dom: 18.2.0_react@18.2.0
   tailwindcss: 3.2.4_postcss@8.4.20
 
@@ -4613,13 +4613,13 @@ packages:
       strip-json-comments: 2.0.1
     dev: false
 
-  /react-daisyui/3.0.1_kz6zmjhcq5ettkyeggq63fk5ee:
-    resolution: {integrity: sha512-UAsSpIJaRh7gpBNpn7abrpFecq2Bj+C/ZHquCK86ovdQygD1lB0nId+LV5mNVs54+yPW04d+P4JL9aFcvSrEIg==}
+  /react-daisyui/4.0.0_kz6zmjhcq5ettkyeggq63fk5ee:
+    resolution: {integrity: sha512-kE+Ybw6GD00AQ6fGm0JRUUF7t3P127D2+XFVRwhEHqgdwLo8K/XhuWA69ilNZSLTklgrnghaUh8H1mtubk3fmg==}
     peerDependencies:
-      daisyui: ^2.42.1
+      daisyui: ^3.0.22
       react: '>=16'
       react-dom: '>=16'
-      tailwindcss: ^3.0.23
+      tailwindcss: '>=3.2.7'
     dependencies:
       daisyui: 3.0.4_postcss@8.4.20
       react: 18.2.0
