@@ -9,7 +9,7 @@ specifiers:
   '@types/react': 18.2.14
   '@types/react-dom': 18.2.6
   autoprefixer: ^10.4.13
-  clsx: ^1.2.1
+  clsx: ^2.0.0
   daisyui: ^3.0.0
   date-fns: ^2.29.3
   plasmo: 0.80.0
@@ -42,7 +42,7 @@ devDependencies:
   '@types/react': 18.2.14
   '@types/react-dom': 18.2.6
   autoprefixer: 10.4.13_postcss@8.4.20
-  clsx: 1.2.1
+  clsx: 2.0.0
   postcss: 8.4.20
   prettier: 3.0.0
   react-hook-form: 7.41.5_react@18.2.0
@@ -2755,8 +2755,8 @@ packages:
     engines: {node: '>=0.8'}
     dev: false
 
-  /clsx/1.2.1:
-    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+  /clsx/2.0.0:
+    resolution: {integrity: sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==}
     engines: {node: '>=6'}
     dev: true
 
