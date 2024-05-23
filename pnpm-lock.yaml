@@ -6,8 +6,8 @@ specifiers:
   '@plasmohq/storage': ^1.0.0
   '@types/chrome': 0.0.241
   '@types/node': 18.16.19
-  '@types/react': 18.2.14
-  '@types/react-dom': 18.2.6
+  '@types/react': 18.3.3
+  '@types/react-dom': 18.3.0
   autoprefixer: ^10.4.13
   clsx: ^2.0.0
   daisyui: ^3.0.0
@@ -15,9 +15,9 @@ specifiers:
   plasmo: 0.80.0
   postcss: ^8.4.20
   prettier: 3.0.0
-  react: 18.2.0
+  react: 18.3.1
   react-daisyui: ^4.0.0
-  react-dom: 18.2.0
+  react-dom: 18.3.1
   react-hook-form: ^7.41.5
   react-textarea-autosize: ^8.4.0
   tailwindcss: ^3.2.4
@@ -27,26 +27,26 @@ specifiers:
 dependencies:
   daisyui: 3.0.4_postcss@8.4.20
   date-fns: 2.29.3
-  plasmo: 0.80.0_iyfpnomciillkc63qm7dtpmfru
-  react: 18.2.0
-  react-daisyui: 4.0.0_kz6zmjhcq5ettkyeggq63fk5ee
-  react-dom: 18.2.0_react@18.2.0
+  plasmo: 0.80.0_dbxrj754qgwnobpbnbjxpuchsq
+  react: 18.3.1
+  react-daisyui: 4.0.0_7nytbjmtfqnuai36em7huleikq
+  react-dom: 18.3.1_react@18.3.1
   tailwindcss: 3.2.4_postcss@8.4.20
 
 devDependencies:
   '@hookform/resolvers': 3.1.0_react-hook-form@7.41.5
   '@plasmohq/prettier-plugin-sort-imports': 4.0.1_prettier@3.0.0
-  '@plasmohq/storage': 1.0.5_react@18.2.0
+  '@plasmohq/storage': 1.0.5_react@18.3.1
   '@types/chrome': 0.0.241
   '@types/node': 18.16.19
-  '@types/react': 18.2.14
-  '@types/react-dom': 18.2.6
+  '@types/react': 18.3.3
+  '@types/react-dom': 18.3.0
   autoprefixer: 10.4.13_postcss@8.4.20
   clsx: 2.0.0
   postcss: 8.4.20
   prettier: 3.0.0
-  react-hook-form: 7.41.5_react@18.2.0
-  react-textarea-autosize: 8.4.0_i73ekzlbntu7jol6ph2fvy4mga
+  react-hook-form: 7.41.5_react@18.3.1
+  react-textarea-autosize: 8.4.0_3vdbhqr2ncalcx7opnshezpx3q
   typescript: 5.3.2
   zod: 3.20.2
 
@@ -663,7 +663,7 @@ packages:
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
-      react-hook-form: 7.41.5_react@18.2.0
+      react-hook-form: 7.41.5_react@18.3.1
     dev: true
 
   /@jridgewell/gen-mapping/0.3.2:
@@ -1578,7 +1578,7 @@ packages:
       nullthrows: 1.1.1
     dev: false
 
-  /@plasmohq/consolidate/0.17.0_biqbaboplfbrettd7655fr4n2y:
+  /@plasmohq/consolidate/0.17.0_nnrd3gsncyragczmpvfhocinkq:
     resolution: {integrity: sha512-Na8imBnvzYPtzkK+9Uv9hPZ/oJti/0jgiQWD222SHxHw2QCVuR4KzslxXCy/rS8gGluSiTs1BGVvc3d2O6aJCA==}
     engines: {node: '>= 0.10.0'}
     peerDependencies:
@@ -1723,8 +1723,8 @@ packages:
         optional: true
     dependencies:
       bluebird: 3.7.2
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
+      react: 18.3.1
+      react-dom: 18.3.1_react@18.3.1
     dev: false
 
   /@plasmohq/init/0.6.5:
@@ -1753,7 +1753,7 @@ packages:
       - '@parcel/core'
     dev: false
 
-  /@plasmohq/parcel-config/0.38.4_iyfpnomciillkc63qm7dtpmfru:
+  /@plasmohq/parcel-config/0.38.4_dbxrj754qgwnobpbnbjxpuchsq:
     resolution: {integrity: sha512-vI8OCllNVAtTqmy8zd8Hfb7Etd49LNS1O78Ye/6c1RVjSwKAoIpHFe2bddQtsbzYbOjsfIr30Xnjxkp7cF5ruw==}
     dependencies:
       '@parcel/compressor-raw': 2.9.3_@parcel+core@2.9.3
@@ -1790,7 +1790,7 @@ packages:
       '@plasmohq/parcel-transformer-inline-css': 0.3.8
       '@plasmohq/parcel-transformer-manifest': 0.17.7
       '@plasmohq/parcel-transformer-svelte': 0.5.2
-      '@plasmohq/parcel-transformer-vue': 0.4.1_biqbaboplfbrettd7655fr4n2y
+      '@plasmohq/parcel-transformer-vue': 0.4.1_nnrd3gsncyragczmpvfhocinkq
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/helpers'
@@ -2007,7 +2007,7 @@ packages:
       svelte: 4.0.1
     dev: false
 
-  /@plasmohq/parcel-transformer-vue/0.4.1_biqbaboplfbrettd7655fr4n2y:
+  /@plasmohq/parcel-transformer-vue/0.4.1_nnrd3gsncyragczmpvfhocinkq:
     resolution: {integrity: sha512-5xsqhHute4q87b5ItDkPhxOMFydceTelZxchklREfx653ltu54SZaaEajAgh+p8bAFIye5qk+/En1T8rxnZzEw==}
     engines: {parcel: '>= 2.7.0'}
     dependencies:
@@ -2017,7 +2017,7 @@ packages:
       '@parcel/source-map': 2.1.1
       '@parcel/types': 2.9.3_@parcel+core@2.9.3
       '@parcel/utils': 2.9.3
-      '@plasmohq/consolidate': 0.17.0_biqbaboplfbrettd7655fr4n2y
+      '@plasmohq/consolidate': 0.17.0_nnrd3gsncyragczmpvfhocinkq
       '@vue/compiler-sfc': 3.3.4
       nullthrows: 1.1.1
       semver: 7.5.3
@@ -2089,7 +2089,7 @@ packages:
       - supports-color
     dev: true
 
-  /@plasmohq/storage/1.0.5_react@18.2.0:
+  /@plasmohq/storage/1.0.5_react@18.3.1:
     resolution: {integrity: sha512-zxgB/53Tidr1S6cFguOGyZns439bo8p5srxRh2UPEJvDi/Ickh+ATpDAWfQUsC/TPEQEM/+1IXI0IkYlePKqfw==}
     peerDependencies:
       react: ^16.8.6 || ^17 || ^18
@@ -2098,7 +2098,7 @@ packages:
         optional: true
     dependencies:
       '@types/webextension-polyfill': 0.10.0
-      react: 18.2.0
+      react: 18.3.1
       webextension-polyfill: 0.10.0
     dev: true
 
@@ -2434,22 +2434,17 @@ packages:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
     dev: true
 
-  /@types/react-dom/18.2.6:
-    resolution: {integrity: sha512-2et4PDvg6PVCyS7fuTc4gPoksV58bW0RwSxWKcPRcHZf0PRUGq03TKcD/rUHe3azfV6/5/biUBJw+HhCQjaP0A==}
+  /@types/react-dom/18.3.0:
+    resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
     dependencies:
-      '@types/react': 18.2.14
+      '@types/react': 18.3.3
     dev: true
 
-  /@types/react/18.2.14:
-    resolution: {integrity: sha512-A0zjq+QN/O0Kpe30hA1GidzyFjatVvrpIvWLxD+xv67Vt91TWWgco9IvrJBkeyHm1trGaFS/FSGqPlhyeZRm0g==}
+  /@types/react/18.3.3:
+    resolution: {integrity: sha512-hti/R0pS0q1/xx+TsI73XIqk26eBsISZ2R0wUijXIngRK9R/e7Xw/cXVxQK7R5JjW+SV4zGcn5hXjudkN/pLIw==}
     dependencies:
       '@types/prop-types': 15.7.5
-      '@types/scheduler': 0.16.2
       csstype: 3.1.1
-    dev: true
-
-  /@types/scheduler/0.16.2:
-    resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
     dev: true
 
   /@types/webextension-polyfill/0.10.0:
@@ -4461,7 +4456,7 @@ packages:
     engines: {node: '>= 6'}
     dev: false
 
-  /plasmo/0.80.0_iyfpnomciillkc63qm7dtpmfru:
+  /plasmo/0.80.0_dbxrj754qgwnobpbnbjxpuchsq:
     resolution: {integrity: sha512-LVE6K5KRwl6eeFcTVwjveYsxhTtQ2xsTBlDoFUMGaUv/OR/orZk/tTFY7cvIg2jLNUJPatP9jbRKYgEldat34A==}
     hasBin: true
     dependencies:
@@ -4471,7 +4466,7 @@ packages:
       '@parcel/package-manager': 2.9.3_@parcel+core@2.9.3
       '@parcel/watcher': 2.1.0
       '@plasmohq/init': 0.6.5
-      '@plasmohq/parcel-config': 0.38.4_iyfpnomciillkc63qm7dtpmfru
+      '@plasmohq/parcel-config': 0.38.4_dbxrj754qgwnobpbnbjxpuchsq
       '@plasmohq/parcel-core': 0.1.6
       buffer: 6.0.3
       chalk: 5.2.0
@@ -4739,7 +4734,7 @@ packages:
       strip-json-comments: 2.0.1
     dev: false
 
-  /react-daisyui/4.0.0_kz6zmjhcq5ettkyeggq63fk5ee:
+  /react-daisyui/4.0.0_7nytbjmtfqnuai36em7huleikq:
     resolution: {integrity: sha512-kE+Ybw6GD00AQ6fGm0JRUUF7t3P127D2+XFVRwhEHqgdwLo8K/XhuWA69ilNZSLTklgrnghaUh8H1mtubk3fmg==}
     peerDependencies:
       daisyui: ^3.0.22
@@ -4748,32 +4743,32 @@ packages:
       tailwindcss: '>=3.2.7'
     dependencies:
       daisyui: 3.0.4_postcss@8.4.20
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
+      react: 18.3.1
+      react-dom: 18.3.1_react@18.3.1
       tailwindcss: 3.2.4_postcss@8.4.20
     dev: false
 
-  /react-dom/18.2.0_react@18.2.0:
-    resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
+  /react-dom/18.3.1_react@18.3.1:
+    resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
-      react: ^18.2.0
+      react: ^18.3.1
     dependencies:
       loose-envify: 1.4.0
-      react: 18.2.0
-      scheduler: 0.23.0
+      react: 18.3.1
+      scheduler: 0.23.2
     dev: false
 
   /react-error-overlay/6.0.9:
     resolution: {integrity: sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==}
     dev: false
 
-  /react-hook-form/7.41.5_react@18.2.0:
+  /react-hook-form/7.41.5_react@18.3.1:
     resolution: {integrity: sha512-DAKjSJ7X9f16oQrP3TW2/eD9N6HOgrmIahP4LOdFphEWVfGZ2LulFd6f6AQ/YS/0cx/5oc4j8a1PXxuaurWp/Q==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
     dependencies:
-      react: 18.2.0
+      react: 18.3.1
     dev: true
 
   /react-refresh/0.14.0:
@@ -4786,22 +4781,22 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  /react-textarea-autosize/8.4.0_i73ekzlbntu7jol6ph2fvy4mga:
+  /react-textarea-autosize/8.4.0_3vdbhqr2ncalcx7opnshezpx3q:
     resolution: {integrity: sha512-YrTFaEHLgJsi8sJVYHBzYn+mkP3prGkmP2DKb/tm0t7CLJY5t1Rxix8070LAKb0wby7bl/lf2EeHkuMihMZMwQ==}
     engines: {node: '>=10'}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       '@babel/runtime': 7.20.7
-      react: 18.2.0
-      use-composed-ref: 1.3.0_react@18.2.0
-      use-latest: 1.2.1_i73ekzlbntu7jol6ph2fvy4mga
+      react: 18.3.1
+      use-composed-ref: 1.3.0_react@18.3.1
+      use-latest: 1.2.1_3vdbhqr2ncalcx7opnshezpx3q
     transitivePeerDependencies:
       - '@types/react'
     dev: true
 
-  /react/18.2.0:
-    resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
+  /react/18.3.1:
+    resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
@@ -4936,8 +4931,8 @@ packages:
     dev: false
     optional: true
 
-  /scheduler/0.23.0:
-    resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
+  /scheduler/0.23.2:
+    resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
     dependencies:
       loose-envify: 1.4.0
     dev: false
@@ -5412,15 +5407,15 @@ packages:
       tslib: 2.4.1
     dev: false
 
-  /use-composed-ref/1.3.0_react@18.2.0:
+  /use-composed-ref/1.3.0_react@18.3.1:
     resolution: {integrity: sha512-GLMG0Jc/jiKov/3Ulid1wbv3r54K9HlMW29IWcDFPEqFkSO2nS0MuefWgMJpeHQ9YJeXDL3ZUF+P3jdXlZX/cQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      react: 18.2.0
+      react: 18.3.1
     dev: true
 
-  /use-isomorphic-layout-effect/1.1.2_i73ekzlbntu7jol6ph2fvy4mga:
+  /use-isomorphic-layout-effect/1.1.2_3vdbhqr2ncalcx7opnshezpx3q:
     resolution: {integrity: sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==}
     peerDependencies:
       '@types/react': '*'
@@ -5429,11 +5424,11 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@types/react': 18.2.14
-      react: 18.2.0
+      '@types/react': 18.3.3
+      react: 18.3.1
     dev: true
 
-  /use-latest/1.2.1_i73ekzlbntu7jol6ph2fvy4mga:
+  /use-latest/1.2.1_3vdbhqr2ncalcx7opnshezpx3q:
     resolution: {integrity: sha512-xA+AVm/Wlg3e2P/JiItTziwS7FK92LWrDB0p+hgXloIMuVCeJJ8v6f0eeHyPZaJrM+usM1FkFfbNCrJGs8A/zw==}
     peerDependencies:
       '@types/react': '*'
@@ -5442,9 +5437,9 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@types/react': 18.2.14
-      react: 18.2.0
-      use-isomorphic-layout-effect: 1.1.2_i73ekzlbntu7jol6ph2fvy4mga
+      '@types/react': 18.3.3
+      react: 18.3.1
+      use-isomorphic-layout-effect: 1.1.2_3vdbhqr2ncalcx7opnshezpx3q
     dev: true
 
   /util-deprecate/1.0.2:
